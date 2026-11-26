@@ -4,7 +4,7 @@ A personal Claude Code plugin that you build once and use in every other project
 
 **Time:** 1 day for the first version (≈ 8 h of focused work), then small improvements after each project.
 
-**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · 🟡 Step 5 (skills written, waiting for your tests) · ⬜ Step 6 · ⬜ Step 7
+**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · ✅ Step 5 · 🟡 Step 6 (hook written, 12 tests pass, waiting for your tests) · ⬜ Step 7
 
 ---
 
@@ -373,7 +373,7 @@ description: Adds what the user learned this session to LEARNINGS.md. Use at the
 
 ---
 
-### Step 5: `interview-prep` and `release-checklist` (≈ 1 h)
+### Step 5: `interview-prep` and `release-checklist` ✅ DONE
 
 > **Summary:** `interview-prep` runs a mock interview on your project: 10 questions one at a time, each answer graded, then a score and topics to revise. `release-checklist` walks through a release in order and stops for your OK before anything public; only you can start it. **Result:** you can defend your project in an interview and release versions safely.
 
