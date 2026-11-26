@@ -229,7 +229,8 @@ Show a 5-line summary and ask: "Start day 1?"
 | 3.6 | You | Restart, test on a new topic: "Explain how the tutor subagent works" | ✅ 56-line lesson, 9 general questions |
 | 3.7 | Claude | Create the `lessons` repo (public, [github.com/E54Sacha/lessons](https://github.com/E54Sacha/lessons)), move the 2 lessons there, add quiz JSON | ✅ |
 | 3.8 | Claude | Write the `lessons-sync` hook + tests (`node --test tests/`) | ✅ 5 tests pass |
-| 3.9 | You | Restart, then ask for a lesson on a non-code topic, e.g. "Teach me about matrices" | ⬜ |
+| 3.9 | You | Restart, then ask for a lesson on a non-code topic, e.g. "Teach me about matrices" | ✅ Pushed as `Add lesson: maths/linear-algebra/matrices` |
+| 3.10 | Claude | Make the hook report its result to `tutor` (it pushed, but `tutor` couldn't see it) | ✅ |
 
 **What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
 1. writes for a **beginner** student (first years), not junior / internship level;

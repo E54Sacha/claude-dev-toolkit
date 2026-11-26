@@ -12,6 +12,10 @@ function readStdin() {
   try { return JSON.parse(readFileSync(0, "utf8")); } catch { return null; }
 }
 
+// Exit-0 output is hidden from Claude unless sent as JSON "additionalContext".
+const tellClaude = (text) =>
+  console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: text } }));
+
 const git = (root, ...args) => spawnSync("git", ["-C", root, ...args], { encoding: "utf8", timeout: 30000 });
 
 const event = readStdin();
@@ -41,11 +45,14 @@ if (errors.length) {
 const files = [relative(root, mdPath), relative(root, quizPath)];
 const isNew = git(root, "ls-files", "--error-unmatch", files[1]).status !== 0;
 git(root, "add", "--", ...files);
-if (git(root, "diff", "--cached", "--quiet").status === 0) process.exit(0); // nothing changed
+if (git(root, "diff", "--cached", "--quiet").status === 0) {
+  tellClaude(`lessons-sync: lesson ${lessonId} is valid and already committed (no changes to push).`);
+  process.exit(0);
+}
 
 const commit = git(root, "commit", "-m", `${isNew ? "Add" : "Update"} lesson: ${lessonId}`);
 if (commit.status !== 0) {
-  console.error(`lessons-sync: commit failed: ${commit.stderr || commit.stdout}`);
+  tellClaude(`lessons-sync: lesson ${lessonId} is valid but the commit failed: ${(commit.stderr || commit.stdout).trim()}`);
   process.exit(0);
 }
 
@@ -55,7 +62,7 @@ if (push.status !== 0) {
   push = git(root, "push");
 }
 if (push.status !== 0) {
-  console.error(`lessons-sync: committed "${lessonId}" but push failed (it will go with the next push): ${push.stderr.trim()}`);
+  tellClaude(`lessons-sync: committed lesson ${lessonId} locally, but the push failed (it will go with the next push): ${push.stderr.trim()}`);
   process.exit(0);
 }
-console.log(`lessons-sync: pushed lesson ${lessonId}`);
+tellClaude(`lessons-sync: lesson ${lessonId} is valid, committed and pushed to GitHub.`);
