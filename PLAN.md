@@ -523,10 +523,11 @@ Why always exit 0: a non-zero exit code is shown to Claude as an error, and exit
 
 | # | Who | Task | Time |
 |---|---|---|---|
-| 7.1 | Claude | Delete `skills/hello/` (its job is done) | 2 min |
-| 7.2 | Claude | Finalize README with `write-readme`: install commands, what's inside, GIF slot | 10 min |
-| 7.3 | Claude | Create `CHANGELOG.md` with a `0.1.0` section | 5 min |
-| 7.4 | You | Record a 30-60 s GIF of `scope-project` turning a vague idea into a plan (ScreenToGif on Windows) | 15 min |
+| 7.1 | Claude | Delete `skills/hello/` (its job is done) | ✅ |
+| 7.1b | Claude | Make the lessons path configurable: `setup-lessons` skill + template, session-start hook, `~/.claude/lessons.json` | ✅ 4 new tests (19 total) |
+| 7.2 | Claude | Finalize README with `write-readme`: install commands, what's inside, GIF slot | ✅ |
+| 7.3 | Claude | Create `CHANGELOG.md` with a `0.1.0` section | ✅ |
+| 7.4 | You | (later) Record a 30-60 s GIF of `scope-project` turning a vague idea into a plan (ScreenToGif on Windows) | 15 min |
 | 7.5 | You | Run `/claude-dev-toolkit:release-checklist` to tag `v0.1.0` | 10 min |
 | 7.6 | You | Make the repo public on GitHub | 2 min |
 | 7.7 | You | Remove the local install, then install from GitHub with the two commands | 10 min |
