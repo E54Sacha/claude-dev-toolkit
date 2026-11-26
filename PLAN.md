@@ -234,7 +234,7 @@ Show a 5-line summary and ask: "Start day 1?"
 | 3.11 | Claude | Turn lessons into illustrated HTML pages (SVG drawings, Mermaid diagrams, KaTeX formulas, callouts), shared style, auto-built `index.html`, GitHub Pages at [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/); convert the 3 existing lessons. `.quiz.json` unchanged | ✅ |
 | 3.12 | You | Restart, ask for a new lesson, check it has at least one drawing and looks right on the site | ✅ "Teach me about Newton's laws": drawing, flowchart, formulas, 12 questions, pushed |
 | 3.13 | Claude | Modern illustrations inspired by a slide-deck plugin: HTML/CSS diagram kit (flows, decisions, timelines, layers, compare, stats) with Font Awesome icons instead of Mermaid; optional quiz pictures (inline SVG in `"figure"`, checked by the hook); 4 lessons rebuilt | ✅ |
-| 3.14 | You | Restart, ask for a new lesson, check the illustrations look like the Newton one | ⬜ |
+| 3.14 | You | Restart, ask for a new lesson, check the illustrations look like the Newton one | ✅ "Atoms and elements" (new chemistry subject): atom drawing, mini periodic table, kit diagrams, 2 quiz pictures |
 
 **What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
 1. writes for a **beginner** student (first years), not junior / internship level;
