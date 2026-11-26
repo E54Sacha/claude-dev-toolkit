@@ -309,7 +309,7 @@ Other ways · Quiz (+ answers in <details>) · optional: Things worth noticing, 
 
 ---
 
-### Step 4: `write-readme` and `learning-log` (≈ 1 h)
+### Step 4: `write-readme` and `learning-log` ✅ DONE
 
 > **Summary:** Two documentation skills. `write-readme` builds a portfolio-ready README from a fixed template, using only what really exists in the code. `learning-log` adds what you learned in the session to `LEARNINGS.md`, after you confirm. **Result:** every repo is presentable and shows what you learned on it.
 
