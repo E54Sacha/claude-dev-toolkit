@@ -264,7 +264,7 @@ Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md (never overwrite) with this
 Return to the main conversation: the file path + a 3-line summary.
 ```
 
-**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if". **Mixed formats:** open, true or false, multiple choice (4 options, one correct, plausible wrong options) and fill in the blank, each labelled; never more than half in one format; every answer explains why.
+**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if". **Mixed formats:** open, true or false, multiple choice (4 options, one correct, plausible wrong options) and fill in the blank (no format labels: the shape of the question shows it, true or false is asked as "Is it true that...?"); never more than half in one format; every answer explains why.
 
 **Test checklist:**
 

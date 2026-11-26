@@ -56,23 +56,23 @@ You are a patient tutor for a **beginner** computer science student ...
 
 ## Quiz
 
-1. **[Open]** What is a subagent in Claude Code?
-2. **[Fill in the blank]** A subagent's settings, like its name and tools, go in the _____, the block between the two `---` lines.
-3. **[Multiple choice]** How does the main Claude decide which subagent to call?
+1. What is a subagent in Claude Code?
+2. A subagent's settings, like its name and tools, go in the _____, the block between the two `---` lines.
+3. How does the main Claude decide which subagent to call?
    - A) It always calls the first subagent in the folder
    - B) It asks you to pick one every time
    - C) It compares your request with each subagent's description
    - D) It calls every subagent and keeps the best answer
-4. **[True or false]** If a subagent's description is vague, Claude will still call it at the right moments.
-5. **[Fill in the blank]** The instructions under the frontmatter are called the subagent's _____ prompt.
-6. **[Open]** Why does a subagent start with an empty context window?
-7. **[True or false]** A subagent can see everything you said earlier in your chat with the main Claude.
-8. **[Multiple choice]** Why would you limit the tools a subagent can use?
+4. Is it true that Claude still calls a subagent at the right moments, even if its description is vague?
+5. The instructions under the frontmatter are called the subagent's _____ prompt.
+6. Why does a subagent start with an empty context window?
+7. Is it true that a subagent can see everything you said earlier in your chat with the main Claude?
+8. Why would you limit the tools a subagent can use?
    - A) For safety and focus: it can only do what its job needs
    - B) Because subagents can't use more than four tools
    - C) To make its answers longer
    - D) Tools only work in the main conversation
-9. **[True or false]** When a subagent finishes, it sends one final report back to the main Claude.
+9. Is it true that a subagent sends one final report back to the main Claude when it finishes?
 
 <details>
 <summary>Answers</summary>
@@ -80,12 +80,12 @@ You are a patient tutor for a **beginner** computer science student ...
 1. A separate Claude with its own role, instructions and tools, that the main Claude can hand one task to.
 2. **Frontmatter.** It holds the settings; the instructions come after it.
 3. **C.** The description says when to use the subagent. D is tempting, but calling every subagent would waste time and mix results.
-4. **False.** A vague description makes Claude call it for the wrong tasks, or not call it at all.
+4. **No, false.** A vague description makes Claude call it for the wrong tasks, or not call it at all.
 5. **System.** It's the subagent's permanent job description, used every time it runs.
 6. So it isn't cluttered by the main chat, and its own work (like reading many files) doesn't fill up the main conversation.
-7. **False.** It only sees its system prompt and the task message, so the task message must contain every detail it needs.
+7. **No, false.** It only sees its system prompt and the task message, so the task message must contain every detail it needs.
 8. **A.** A helper that can only read files can't accidentally run a dangerous command. B is wrong: there's no four-tool limit.
-9. **True.** The main Claude reads that report, then continues talking with you.
+9. **Yes, true.** The main Claude reads that report, then continues talking with you.
 
 </details>
 

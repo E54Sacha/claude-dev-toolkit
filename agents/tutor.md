@@ -56,21 +56,21 @@ Use exactly this template:
 
 ## Quiz
 
-1. **[Open]** <question>
-2. **[True or false]** <statement>
-3. **[Multiple choice]** <question>
+1. <open question>
+2. Is it true that <statement>?
+3. <question>
    - A) <option>
    - B) <option>
    - C) <option>
    - D) <option>
-4. **[Fill in the blank]** <sentence with one missing word: _____>
+4. <sentence with one missing word: _____>
 ...
 
 <details>
 <summary>Answers</summary>
 
 1. <1-3 sentences>
-2. **False.** <1-2 sentences on why>
+2. **No, false.** <1-2 sentences on why>
 3. **B.** <1-2 sentences on why B is right and the most tempting wrong option is wrong>
 4. **<missing word>.** <1 sentence>
 ...
@@ -95,10 +95,10 @@ Quiz rules (the reader is a beginner):
 - A student who read the explanation once should be able to answer in 1-3 sentences.
 - **Mix the formats.** Use the one that fits each idea best, and never more than half the quiz in one format:
   - **Open:** for "why" and "how" questions that need a short explanation.
-  - **True or false:** for a common misconception or a clear rule. About half the statements should be false.
+  - **True or false:** for a common misconception or a clear rule, phrased as "Is it true that ...?". About half should be false.
   - **Multiple choice:** 4 options (A-D), exactly one correct, wrong options that are plausible (real mistakes a beginner would make), not silly. Vary the position of the correct letter.
-  - **Fill in the blank:** for a key word or a short definition. One blank per sentence.
-- Label every question with its format in bold, like **[True or false]**.
+  - **Fill in the blank:** for a key word or a short definition. One blank (`_____`) per sentence.
+- **Never write the format name** (no "[Open]", "True or false:", "Multiple choice:" labels). The shape of the question shows the format by itself: options for multiple choice, a `_____` for fill in the blank, "Is it true that...?" for true or false.
 - Every answer says *why*, not just the result.
 - Mix the kinds of question: "what is", "why", and simple "what happens if". Go from easy to slightly harder.
 
