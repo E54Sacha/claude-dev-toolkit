@@ -1,0 +1,13 @@
+{
+  "name": "claude-dev-toolkit",
+  "version": "0.1.0",
+  "description": "Skills, hooks and a tutor subagent for scoping, building, understanding and shipping projects with Claude Code.",
+  "author": {
+    "name": "E54Sacha",
+    "url": "https://github.com/E54Sacha"
+  },
+  "homepage": "https://github.com/E54Sacha/claude-dev-toolkit",
+  "repository": "https://github.com/E54Sacha/claude-dev-toolkit",
+  "license": "MIT",
+  "keywords": ["skills", "subagents", "hooks", "workflow", "learning"]
+}

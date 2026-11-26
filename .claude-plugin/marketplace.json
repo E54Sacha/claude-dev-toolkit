@@ -1,0 +1,19 @@
+{
+  "name": "claude-dev-toolkit",
+  "owner": {
+    "name": "E54Sacha",
+    "url": "https://github.com/E54Sacha"
+  },
+  "metadata": {
+    "description": "Personal Claude Code toolkit: scope, build, understand, ship.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-dev-toolkit",
+      "source": "./",
+      "description": "Skills, hooks and a tutor subagent for scoping, building, understanding and shipping projects with Claude Code.",
+      "version": "0.1.0"
+    }
+  ]
+}
