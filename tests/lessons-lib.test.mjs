@@ -53,3 +53,15 @@ test("index lists lessons grouped by subject and topic", async () => {
   assert.match(html, /11 quiz questions/);
   assert.doesNotMatch(html, /id="cs"/); // empty subjects are hidden
 });
+
+test("quiz figures must be safe, self-contained SVG", () => {
+  const q = good();
+  q.questions[0].figure = '<svg viewBox="0 0 10 10"><rect width="10" height="10" fill="#5b7fe0"/></svg>';
+  assert.deepEqual(validateQuiz(q, "cs/claude-code/skills", subjects), []);
+  q.questions[0].figure = '<svg onload="alert(1)"></svg>';
+  assert.match(validateQuiz(q, "cs/claude-code/skills", subjects).join(), /scripts, event handlers/);
+  q.questions[0].figure = '<svg><rect class="svg-box"/></svg>';
+  assert.match(validateQuiz(q, "cs/claude-code/skills", subjects).join(), /inline colours/);
+  q.questions[0].figure = "<img src=x>";
+  assert.match(validateQuiz(q, "cs/claude-code/skills", subjects).join(), /one inline <svg>/);
+});

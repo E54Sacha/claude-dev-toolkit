@@ -233,6 +233,8 @@ Show a 5-line summary and ask: "Start day 1?"
 | 3.10 | Claude | Make the hook report its result to `tutor` (it pushed, but `tutor` couldn't see it) | ✅ |
 | 3.11 | Claude | Turn lessons into illustrated HTML pages (SVG drawings, Mermaid diagrams, KaTeX formulas, callouts), shared style, auto-built `index.html`, GitHub Pages at [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/); convert the 3 existing lessons. `.quiz.json` unchanged | ✅ |
 | 3.12 | You | Restart, ask for a new lesson, check it has at least one drawing and looks right on the site | ✅ "Teach me about Newton's laws": drawing, flowchart, formulas, 12 questions, pushed |
+| 3.13 | Claude | Modern illustrations inspired by a slide-deck plugin: HTML/CSS diagram kit (flows, decisions, timelines, layers, compare, stats) with Font Awesome icons instead of Mermaid; optional quiz pictures (inline SVG in `"figure"`, checked by the hook); 4 lessons rebuilt | ✅ |
+| 3.14 | You | Restart, ask for a new lesson, check the illustrations look like the Newton one | ⬜ |
 
 **What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
 1. writes for a **beginner** student (first years), not junior / internship level;
@@ -273,7 +275,7 @@ tools: Read, Grep, Glob, Write
 ---
 
 - Read subjects.json; save to C:/Side_project/lessons/<subject>/<topic>/<lesson>.html, then .quiz.json
-- Copy head + scripts from the reference lesson (matrices.html); SVG drawing, Mermaid, $$ formulas $$, callouts
+- Copy head + scripts from the reference lesson (newtons-laws.html); illustration kit (flows, decisions, timelines, layers, compare, stats + icons), $$ formulas $$, callouts, optional quiz pictures
 - Teach the topic in general, then ONE example (code snippet, or a worked example with numbers)
 - Short sentences, everyday words, about 80 lines max. Write only these two files.
 

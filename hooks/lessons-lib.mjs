@@ -68,6 +68,13 @@ export function validateQuiz(quiz, expectedId, subjects) {
           if (typeof q.question === "string" && !q.question.includes("_____")) errors.push(`${at}: fill_blank "question" must contain _____`);
         }
         if (q.type === "open" && typeof q.answer !== "string") errors.push(`${at}: open "answer" must be text`);
+        if (q.figure !== undefined) {
+          const f = q.figure;
+          if (typeof f !== "string" || !/^<svg[\s>]/.test(f.trim()) || !f.trim().endsWith("</svg>")) errors.push(`${at}: "figure" must be one inline <svg>...</svg>`);
+          else if (/<script|\son\w+\s*=|javascript:|<foreignObject/i.test(f)) errors.push(`${at}: "figure" must not contain scripts, event handlers or foreignObject`);
+          else if (/\sclass\s*=/.test(f)) errors.push(`${at}: "figure" must use inline colours, not CSS classes (it must work outside the lesson page)`);
+          else if (f.length > 20000) errors.push(`${at}: "figure" is too big (max 20000 characters)`);
+        }
       });
     }
   }

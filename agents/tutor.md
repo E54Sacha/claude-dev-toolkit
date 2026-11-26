@@ -34,7 +34,7 @@ C:/Side_project/lessons/<subject>/<topic>/<lesson>.quiz.json
 
 ## The `.html` lesson
 
-Each lesson is a web page that uses the shared style and script of the lessons repo (`assets/lesson.css`, `assets/lesson.js`). **Before writing, read `maths/linear-algebra/matrices.html` in the lessons repo**: it is the reference. Copy its `<head>` and the 4 `<script>` lines at the end exactly (they include integrity hashes), and change only the `<title>`, the `lesson-*` meta tags and the content.
+Each lesson is a web page that uses the shared style and script of the lessons repo (`assets/lesson.css`, `assets/lesson.js`). **Before writing, read `physics/mechanics/newtons-laws.html` in the lessons repo**: it is the reference for the layout and the illustrations. Copy its `<head>` (3 stylesheets) and the 3 `<script>` lines at the end exactly (they include integrity hashes), and change only the `<title>`, the `lesson-*` meta tags and the content.
 
 Page structure (in this order):
 
@@ -46,9 +46,9 @@ Page structure (in this order):
   <div class="tags"><span>beginner</span><span><subject></span><span><date></span></div>
 </div></header>
 <main>
-  <section id="idea">        <h2><span class="icon">💡</span>The idea</h2>        3-4 sentences + a "Think of it like this" callout + ONE SVG illustration
+  <section id="idea">        <h2><span class="icon">💡</span>The idea</h2>        3-4 sentences + a "Think of it like this" callout + an illustration of the core idea
   <section id="key-words">   <h2><span class="icon">📖</span>Key words</h2>       <dl class="terms"><div><dt>Term</dt><dd>one sentence</dd></div>…</dl> (3 to 5)
-  <section id="how">         <h2><span class="icon">⚙️</span>How it works</h2>    <ol class="steps"> (3 to 6) + a Mermaid diagram when a process or flow helps
+  <section id="how">         <h2><span class="icon">⚙️</span>How it works</h2>    <ol class="steps"> (3 to 6) + a flow, decision or timeline illustration
   <section id="example">     <h2><span class="icon">🔍</span>Example</h2>         code: ONE <pre><code> snippet (15 lines max, comments in <span class="comment">); maths/physics: worked example with $$ formulas $$
   <section id="why">         <h2><span class="icon">⚖️</span>Why use it</h2>      <div class="pros-cons"><div class="pros">…</div><div class="cons">…</div></div>
   <section id="other-ways">  <h2><span class="icon">🔀</span>Other ways</h2>      <div class="alternatives"><div><strong>Name:</strong> one sentence</div>…</div>
@@ -61,16 +61,33 @@ Page structure (in this order):
 
 For a general topic with no "Why use it" or "Other ways" (e.g. a historical fact), replace them with **Why it matters** (`<h2><span class="icon">🌍</span>Why it matters</h2>`, 2-3 bullets). Do not add other sections.
 
-**Illustrations** (the reader learns from pictures, use them):
-- **SVG drawing, at least one per lesson**, in `<figure>…<figcaption>`, showing the core idea (a grid with a highlighted row, a box with force arrows, two boxes exchanging a message…). Use `viewBox` (no fixed width), `role="img"` and an `aria-label`. Use only these classes for colors, so dark mode works: `svg-box`, `svg-accent`, `svg-hl` (highlight), `svg-line`, `svg-arrow`, `svg-text`, `svg-label`, `svg-strong`. Keep it simple: about 40 shapes max, readable labels, nothing overlapping.
-- **Mermaid diagram** (`<figure><pre class="mermaid">…</pre><figcaption>`) for processes, flows and sequences. Keep node labels short; use `<br/>` for line breaks and quote labels that contain symbols.
+**Illustrations** (the reader learns from pictures: every lesson has at least 2, and each one must make the idea clearer, not just decorate). Build them from the **illustration kit** in `assets/lesson.css`: HTML cards with icons, never Mermaid. Put each one in `<figure class="illus">…<figcaption>…</figcaption></figure>`.
+
+| Pattern | Markup | Use it for |
+|---|---|---|
+| **Flow** | `<div class="flow">` nodes and arrows; `flow vertical` for top-to-bottom; add `keep-row` to stay on one row on phones (max 3 nodes) | a process, cause → effect, input → output |
+| **Node** | `<div class="node c-blue"><i class="fa-solid fa-robot"></i><span class="tag">Label</span>Text<small>detail</small></div>` | one thing or step, with an icon |
+| **Arrow** | `<div class="arrow">label</div>`, `arrow back` (←), `arrow both` (↔), add a colour class to tint it | links between nodes, label optional |
+| **Decision** | `<div class="node decision c-blue">Question?</div>` then `<div class="branches">` with one `<div class="branch"><span class="chip c-green">yes</span><div class="node c-green">…</div></div>` per outcome | if / else, rules with two cases |
+| **Timeline** | `<div class="timeline"><div class="stop c-blue active"><i class="fa-solid …"></i>Step</div>…</div>` (3 to 6 stops) | steps in time, a sequence of events |
+| **Layers** | `<div class="layers"><div class="layer c-blue"><i class="fa-solid …"></i><div><strong>Title</strong><span>one line</span></div></div>…</div>` | parts of a whole, levels, a list of rules |
+| **Compare** | `<div class="compare"><div class="side c-red"><span class="chip c-red">wrong</span><p>…</p></div><div class="arrow"></div><div class="side c-green">…</div></div>` | before / after, wrong / right, myth / fact |
+| **Stats** | `<div class="stats"><div class="stat c-green"><div class="value">40 N</div><div class="label">net force</div></div>…</div>` | key numbers of a worked example |
+| **SVG drawing** | `<svg viewBox=… role="img" aria-label=…>` with the classes `svg-box`, `svg-accent`, `svg-hl`, `svg-line`, `svg-arrow`, `svg-text`, `svg-label`, `svg-strong` | only for real shapes the kit can't show: a grid of numbers, a graph, a physical object |
+
+- **Colours** (`c-blue`, `c-green`, `c-purple`, `c-orange`, `c-red`, `c-gray`) carry meaning: one colour per kind of thing, the same colour for the same thing everywhere in the lesson (green = good / yes, red = wrong / no, orange = warning or opposing force).
+- **Icons**: Font Awesome 6 solid icons (`<i class="fa-solid fa-…"></i>`), e.g. `fa-robot`, `fa-user`, `fa-cart-shopping`, `fa-table-cells`, `fa-gauge-high`, `fa-check`, `fa-xmark`, `fa-arrows-left-right`, `fa-file-lines`, `fa-magnifying-glass`. Use only common icon names you are sure exist.
+- **Keep labels short** (2 to 6 words per node). Max about 6 nodes per figure.
 - **Formulas**: `$$ … $$` for display formulas inside `<div class="math">`, `\( … \)` inline. Write matrices, fractions and units as real formulas, never as `[[2,1],[0,3]]`.
 - **Callouts**: `<aside class="callout">` (💡 key idea), `<aside class="callout tip">` (✅ tip), `<aside class="callout warning">` (⚠️ common mistake). Each starts with `<strong>emoji + title</strong>` then a `<p>`. 1 to 3 per lesson.
+
+**Quiz illustrations** (optional, when a picture makes the question clearer: a force diagram, a grid, a graph, a small scene): put one inline SVG in `<div class="q-figure">` right after the question text, and the **exact same SVG** in the question's `"figure"` field in the `.quiz.json`. These SVGs are reused by the quiz game outside the lesson page, so: inline colours only (e.g. `#5b7fe0` blue, `#e8792b` orange, `#9b6be0` purple, `#1f9d63` green, `#8a94a3` gray), `fill="currentColor"` for text and outlines, `font-family="system-ui,sans-serif"`, no `class`, no scripts. The question must still make sense to someone who can't see the picture. Never put the answer in the picture.
 
 **Quiz markup** (same questions as the `.quiz.json`, word for word):
 
 ```html
 <li><p class="q">Question?</p>
+  <div class="q-figure"><svg …>…</svg></div>                       ← optional picture
   <ol class="options"><li>…</li><li>…</li><li>…</li><li>…</li></ol>   ← multiple choice only
   <details><summary>Answer</summary><p><strong>B.</strong> Why…</p></details></li>
 ```
@@ -116,6 +133,7 @@ The same quiz as the `.html`, word for word, structured for a quiz game. Follow 
 }
 ```
 
+- Optional `"figure"`: the question's inline SVG, identical to the one in the `.html` (see Quiz illustrations).
 - `id`s are `q1`, `q2`… in order. Options have no "A)" prefix. `answer` is a boolean for true_false and the option index (0-3) for multiple_choice.
 - `explanation` is the "why" part of the answer in the `.html`.
 
