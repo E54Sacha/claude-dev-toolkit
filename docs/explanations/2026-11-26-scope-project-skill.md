@@ -147,16 +147,16 @@ These lines turn a simple "write me a requirements doc" into a process with chec
 
 ## Quiz
 
-1. What does the `description` at the top of `SKILL.md` decide?
-2. Why is the template kept in its own file instead of inside `SKILL.md`?
-3. What happens if your idea needs 60 hours but you only have 20?
+1. What is a template, in programming or writing documents?
+2. Why do developers often load things only when they are needed (lazy loading)?
+3. What happens if a project's scope is bigger than the time you have?
 
 <details>
 <summary>Answers</summary>
 
-1. It decides when Claude uses the skill. Claude always reads the description, and starts the skill when your message matches it.
-2. So Claude only loads the template when it needs it (in Phase 3). This keeps Claude's context lighter, and you can change the template without touching the instructions.
-3. In Phase 2, the skill tells you the plan is too big and proposes things to cut. It waits for your choice before writing anything.
+1. A reusable model with blanks to fill in. Every document made from it has the same structure, like the REQUIREMENTS.md template in this skill.
+2. It saves memory and time: you don't pay for something until you use it. Here, the template is only read when the skill reaches the writing phase.
+3. You usually end up with nothing finished. It's better to cut features early and ship a smaller version that works.
 
 </details>
 

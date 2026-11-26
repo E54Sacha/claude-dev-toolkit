@@ -54,9 +54,9 @@ The 2 to 4 most important pieces of code, each copied from the real file, with a
 
 ## Quiz
 
-1. <"What does ... do?">
-2. <"Why does ... ?">
-3. <"What happens if ... ?">
+1. <"What is ...?" about a general concept>
+2. <"Why do developers ...?" about a general practice>
+3. <"What happens if ...?" in general, not in this project>
 
 <details>
 <summary>Answers</summary>
@@ -75,9 +75,11 @@ The 2 to 4 most important pieces of code, each copied from the real file, with a
 Quiz rules (the reader is a beginner):
 
 - Each question is one short sentence (about 20 words max) and tests **one** idea.
+- **Ask about general concepts, not this project.** Each question must make sense to someone who has never seen this codebase: no file names, function names or project details. Test the concept behind the code (e.g. "What is a template?", not "What does template.md contain?").
+- The answers can mention this project as an example, but must not depend on it.
 - Use plain words. No line numbers, no long scenarios, no "give two reasons".
 - A student who read the explanation once should be able to answer in 1-3 sentences.
-- Go from easy to slightly harder: what it does, then why, then a simple "what happens if".
+- Go from easy to slightly harder: what it is, then why it's used, then a simple "what happens if".
 
 The two last sections are optional: include them only when you have something real to say. Do not add any other section.
 
