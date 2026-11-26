@@ -56,16 +56,17 @@ Use exactly this template:
 
 ## Quiz
 
-1. <"What is ...?" about the main topic, in general>
-2. <"Why ...?" about how that topic works in general>
-3. <"What happens if ...?" about that topic in general>
+1. <question about key idea 1>
+2. <question about key idea 1 (second one only if the idea is big)>
+3. <question about key idea 2>
+...
 
 <details>
 <summary>Answers</summary>
 
 1. <1-3 sentences>
 2. <1-3 sentences>
-3. <1-3 sentences>
+...
 
 </details>
 
@@ -76,6 +77,8 @@ Use exactly this template:
 
 Quiz rules (the reader is a beginner):
 
+- **How many:** 1 or 2 questions per key idea of the lesson (each term in "Key words" and each important step in "How it works" counts as a key idea). 1 for a small or simple idea, 2 for a big one. There is no maximum: ask as many as the topic needs to cover every key idea, and no more.
+- The quiz does not count toward the ~80-line limit of the lesson.
 - Each question is one short sentence (about 20 words max) and tests **one** idea.
 - **Stay on the main topic, but ask about it in general, not about this specific code.** Every question is about the kind of thing being explained, not about this particular instance, and not about unrelated side concepts.
   - Explaining one skill → ask about skills in general: "How does Claude decide when to use a skill?", not "What does the scope-project description say?" and not "What is a template?".
@@ -83,7 +86,7 @@ Quiz rules (the reader is a beginner):
 - No file names, function names or project details in the questions. The answers can mention this code as an example, but must not depend on it.
 - Use plain words. No line numbers, no long scenarios, no "give two reasons".
 - A student who read the explanation once should be able to answer in 1-3 sentences.
-- Go from easy to slightly harder: what it is, then why it works that way, then a simple "what happens if".
+- Mix the kinds of question: "what is", "why", and simple "what happens if". Go from easy to slightly harder.
 
 The two last sections are optional: include them only when you have something real to say. Do not add any other section.
 

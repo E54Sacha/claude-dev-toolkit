@@ -211,7 +211,7 @@ Show a 5-line summary and ask: "Start day 1?"
 
 ### Step 3: `tutor` subagent ✅ DONE
 
-> **Summary:** Create a separate Claude whose only job is to teach you the general idea behind a piece of code (what a skill is, what a React component is…), using your project's code as the example. Lessons are short and written for a beginner, and end with 3 general quiz questions. It works in its own context, so your main conversation stays short, and it can only write in `docs/explanations/`. **Result:** you understand code you didn't write, and each lesson is saved for later revision.
+> **Summary:** Create a separate Claude whose only job is to teach you the general idea behind a piece of code (what a skill is, what a React component is…), using your project's code as the example. Lessons are short and written for a beginner, and end with a quiz of 1-2 general questions per key idea. It works in its own context, so your main conversation stays short, and it can only write in `docs/explanations/`. **Result:** you understand code you didn't write, and each lesson is saved for later revision.
 
 **Sub-tasks:**
 
@@ -257,14 +257,14 @@ Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md (never overwrite) with this
 ## In this project       ← how the example applies it + ONE snippet (≤ 15 lines)
 ## Why use it            ← 2-3 advantages, 1-2 limits
 ## Other ways            ← 1-2 alternatives
-## Quiz                  ← 3 short general questions + answers in a <details> block
+## Quiz                  ← 1-2 short general questions per key idea + answers in a <details> block
 ## Things worth noticing ← optional: bugs or risks spotted
 ## What to ask about next← optional
 
 Return to the main conversation: the file path + a 3-line summary.
 ```
 
-**Quiz rules:** one short sentence per question, one idea each, about the main topic in general (no file or function names), answerable in 1-3 sentences, ordered what it is → why → what happens if.
+**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if".
 
 **Test checklist:**
 
@@ -272,7 +272,7 @@ Return to the main conversation: the file path + a 3-line summary.
 |---|---|
 | "Explain how the tutor subagent works" (after a restart) | Claude delegates to `tutor` (it says so), a file appears in `docs/explanations/` |
 | Open the file | Title is the general topic ("Claude Code subagents"), all template sections present, about 80 lines or less, quiz answers hidden |
-| Read the quiz | 3 short questions about subagents in general, none naming a file of this project |
+| Read the quiz | 1-2 short questions per key idea, about subagents in general, none naming a file of this project |
 | Check `git status` | **Nothing changed** outside `docs/explanations/` |
 | Your main conversation | Only a short summary, not the full lesson |
 
