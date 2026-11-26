@@ -16,7 +16,9 @@ function readStdin() {
 const tellClaude = (text) =>
   console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: text } }));
 
-const git = (root, ...args) => spawnSync("git", ["-C", root, ...args], { encoding: "utf8", timeout: 30000 });
+// Run git from inside the lessons repo (not from the current project), so a git.exe planted in the
+// project folder is never picked up on Windows.
+const git = (root, ...args) => spawnSync("git", ["-C", root, ...args], { cwd: root, encoding: "utf8", timeout: 30000 });
 
 const event = readStdin();
 const rawPath = event?.tool_input?.file_path;
