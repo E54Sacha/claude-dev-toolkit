@@ -232,7 +232,7 @@ Show a 5-line summary and ask: "Start day 1?"
 | 3.9 | You | Restart, then ask for a lesson on a non-code topic, e.g. "Teach me about matrices" | ✅ Pushed as `Add lesson: maths/linear-algebra/matrices` |
 | 3.10 | Claude | Make the hook report its result to `tutor` (it pushed, but `tutor` couldn't see it) | ✅ |
 | 3.11 | Claude | Turn lessons into illustrated HTML pages (SVG drawings, Mermaid diagrams, KaTeX formulas, callouts), shared style, auto-built `index.html`, GitHub Pages at [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/); convert the 3 existing lessons. `.quiz.json` unchanged | ✅ |
-| 3.12 | You | Restart, ask for a new lesson, check it has at least one drawing and looks right on the site | ⬜ |
+| 3.12 | You | Restart, ask for a new lesson, check it has at least one drawing and looks right on the site | ✅ "Teach me about Newton's laws": drawing, flowchart, formulas, 12 questions, pushed |
 
 **What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
 1. writes for a **beginner** student (first years), not junior / internship level;
