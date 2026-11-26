@@ -21,7 +21,7 @@ A personal Claude Code plugin that you build once and use in every other project
 |---|---|---|
 | `scope-project` | 📘 Skill | Asks you questions about an idea, then writes `REQUIREMENTS.md` (must / nice-to-have / out of scope, day-by-day plan, definition of done) |
 | `tutor` | 🤖 Subagent | Teaches any topic (project code, CS, maths, physics…) in a short beginner lesson with a quiz. Saves it to the public `lessons` repo |
-| `lessons-sync` | 🪝 Hook | Checks each new lesson's quiz and pushes it to the `lessons` repo automatically |
+| `lessons-sync` | 🪝 Hook | Checks each new lesson's quiz, rebuilds the lessons home page and pushes it to the `lessons` repo automatically |
 | `write-readme` | 📘 Skill | Writes a standard README: pitch, demo GIF slot, Mermaid diagram, how to run, what I learned |
 | `learning-log` | 📘 Skill | At the end of a session, adds what you learned to `LEARNINGS.md` |
 | `interview-prep` | 📘 Skill | Reads your code, asks you 10 interview questions one at a time, grades your answers |
@@ -231,6 +231,8 @@ Show a 5-line summary and ask: "Start day 1?"
 | 3.8 | Claude | Write the `lessons-sync` hook + tests (`node --test tests/`) | ✅ 5 tests pass |
 | 3.9 | You | Restart, then ask for a lesson on a non-code topic, e.g. "Teach me about matrices" | ✅ Pushed as `Add lesson: maths/linear-algebra/matrices` |
 | 3.10 | Claude | Make the hook report its result to `tutor` (it pushed, but `tutor` couldn't see it) | ✅ |
+| 3.11 | Claude | Turn lessons into illustrated HTML pages (SVG drawings, Mermaid diagrams, KaTeX formulas, callouts), shared style, auto-built `index.html`, GitHub Pages at [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/); convert the 3 existing lessons. `.quiz.json` unchanged | ✅ |
+| 3.12 | You | Restart, ask for a new lesson, check it has at least one drawing and looks right on the site | ⬜ |
 
 **What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
 1. writes for a **beginner** student (first years), not junior / internship level;
@@ -270,11 +272,12 @@ description: Teaches a beginner any topic (code from the current project, or a g
 tools: Read, Grep, Glob, Write
 ---
 
-- Read subjects.json; save to C:/Side_project/lessons/<subject>/<topic>/<lesson>.md, then .quiz.json
+- Read subjects.json; save to C:/Side_project/lessons/<subject>/<topic>/<lesson>.html, then .quiz.json
+- Copy head + scripts from the reference lesson (matrices.html); SVG drawing, Mermaid, $$ formulas $$, callouts
 - Teach the topic in general, then ONE example (code snippet, or a worked example with numbers)
 - Short sentences, everyday words, about 80 lines max. Write only these two files.
 
-Template: metadata header · The idea · Key words · How it works · Example · Why use it ·
+Page: header · The idea · Key words · How it works · Example · Why use it ·
 Other ways · Quiz (+ answers in <details>) · optional: Things worth noticing, What to ask about next
 ```
 
@@ -289,7 +292,7 @@ Other ways · Quiz (+ answers in <details>) · optional: Things worth noticing, 
 | Do this | You should see |
 |---|---|
 | `node --test tests/` | 5 tests pass |
-| Restart, then "Teach me about matrices" | A lesson at `lessons/maths/linear-algebra/matrices.md` + `.quiz.json`, with a worked example using numbers |
+| Restart, then "Teach me about matrices" | A lesson at `lessons/maths/linear-algebra/matrices.html` + `.quiz.json`, with a worked example using numbers |
 | `git -C C:/Side_project/lessons log --oneline -1` | `Add lesson: maths/linear-algebra/matrices` |
 | Open github.com/E54Sacha/lessons | The new lesson is there |
 | `git status` in the project you were in | **Nothing changed** |

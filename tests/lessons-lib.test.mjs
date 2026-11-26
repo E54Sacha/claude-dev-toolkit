@@ -41,3 +41,15 @@ test("type-specific answers are checked", () => {
   assert.match(errors, /index 0-3/);
   assert.match(errors, /must contain _____/);
 });
+
+test("index lists lessons grouped by subject and topic", async () => {
+  const { renderIndex } = await import("../hooks/lessons-lib.mjs");
+  const html = renderIndex(
+    [{ id: "maths/linear-algebra/matrices", title: "Matrices", subject: "maths", topic: "linear-algebra", created: "2026-11-26", questions: 11 }],
+    { cs: "Computer science", maths: "Mathematics" },
+  );
+  assert.match(html, /href="maths\/linear-algebra\/matrices.html"/);
+  assert.match(html, /Linear algebra/);
+  assert.match(html, /11 quiz questions/);
+  assert.doesNotMatch(html, /id="cs"/); // empty subjects are hidden
+});

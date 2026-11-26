@@ -1,5 +1,5 @@
 // Pure helpers for lessons-sync.mjs, kept separate so they can be unit-tested.
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, parse, relative, sep } from "node:path";
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -74,11 +74,86 @@ export function validateQuiz(quiz, expectedId, subjects) {
   return errors;
 }
 
-export function readSubjects(root) {
-  return Object.keys(JSON.parse(readFileSync(join(root, "subjects.json"), "utf8")).subjects);
+export function readSubjectInfo(root) {
+  return JSON.parse(readFileSync(join(root, "subjects.json"), "utf8")).subjects;
 }
 
-export function markdownPathFor(quizPath) {
+export function readSubjects(root) {
+  return Object.keys(readSubjectInfo(root));
+}
+
+/** The lesson page that goes with a quiz: <lesson>.quiz.json → <lesson>.html */
+export function pagePathFor(quizPath) {
   const { dir, base } = parse(quizPath);
-  return join(dir, base.replace(/\.quiz\.json$/, ".md"));
+  return join(dir, base.replace(/\.quiz\.json$/, ".html"));
+}
+
+/** Every lesson in the repo, read from its .quiz.json: [{ id, title, subject, topic, created, questions }] */
+export function collectLessons(root, subjects) {
+  const lessons = [];
+  for (const subject of subjects) {
+    const sDir = join(root, subject);
+    if (!existsSync(sDir)) continue;
+    for (const topic of readdirSync(sDir)) {
+      const tDir = join(sDir, topic);
+      if (!statSync(tDir).isDirectory()) continue;
+      for (const file of readdirSync(tDir).filter((f) => f.endsWith(".quiz.json"))) {
+        try {
+          const q = JSON.parse(readFileSync(join(tDir, file), "utf8"));
+          lessons.push({ id: `${subject}/${topic}/${file.replace(/\.quiz\.json$/, "")}`, title: q.title, subject, topic, created: q.created, questions: q.questions?.length ?? 0 });
+        } catch { /* skip unreadable quiz */ }
+      }
+    }
+  }
+  return lessons.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" })[c]);
+const NAMES = { cs: "CS" };
+const pretty = (slug) => NAMES[slug] ?? slug.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+
+/** The home page listing every lesson, grouped by subject then topic. */
+export function renderIndex(lessons, subjectInfo) {
+  const sections = Object.entries(subjectInfo)
+    .map(([subject, description]) => {
+      const mine = lessons.filter((l) => l.subject === subject);
+      if (!mine.length) return "";
+      const topics = [...new Set(mine.map((l) => l.topic))];
+      const item = (l) =>
+        `      <li><a href="${esc(l.id)}.html"><strong>${esc(l.title)}</strong>` +
+        `<div class="meta">${l.questions} quiz questions · ${esc(l.created)}</div></a></li>`;
+      const topicBlock = (t) =>
+        `    <h3>${esc(pretty(t))}</h3>\n    <ul class="lesson-list">\n` +
+        mine.filter((l) => l.topic === t).map(item).join("\n") +
+        `\n    </ul>`;
+      return `  <section class="subject" id="${esc(subject)}">
+    <h2>${esc(pretty(subject))}</h2>
+    <p class="lede">${esc(description)}</p>
+${topics.map(topicBlock).join("\n")}
+  </section>`;
+    })
+    .filter(Boolean)
+    .join("\n");
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lessons</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <h1><span class="icon">📚</span>Lessons</h1>
+    <p class="lede">Short beginner lessons with quizzes. ${lessons.length} lessons so far.</p>
+  </div>
+</header>
+<main>
+${sections}
+</main>
+<footer>Generated automatically when a lesson is added · Written by the tutor of <a href="https://github.com/E54Sacha/claude-dev-toolkit">claude-dev-toolkit</a></footer>
+</body>
+</html>
+`;
 }

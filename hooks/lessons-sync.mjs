@@ -1,12 +1,12 @@
 // PostToolUse hook: when a lesson's .quiz.json is written inside the lessons repo
-// (a folder with a `.lessons-repo` marker), validate it, then commit and push the lesson.
+// (a folder with a `.lessons-repo` marker), validate it, rebuild index.html, then commit and push the lesson.
 // - Not a lesson quiz → exit 0, do nothing.
 // - Invalid quiz → exit 2: the errors are shown to Claude so it can fix the file.
 // - Git problems (offline, no remote…) → warn on stderr, exit 0. The next lesson will push both.
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
-import { relative, resolve } from "node:path";
-import { findLessonsRoot, lessonIdFromPath, markdownPathFor, readSubjects, validateQuiz } from "./lessons-lib.mjs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
+import { collectLessons, findLessonsRoot, lessonIdFromPath, pagePathFor, readSubjectInfo, readSubjects, renderIndex, validateQuiz } from "./lessons-lib.mjs";
 
 function readStdin() {
   try { return JSON.parse(readFileSync(0, "utf8")); } catch { return null; }
@@ -27,7 +27,7 @@ const root = findLessonsRoot(quizPath);
 if (!root) process.exit(0);
 
 const lessonId = lessonIdFromPath(root, quizPath);
-const mdPath = markdownPathFor(quizPath);
+const pagePath = pagePathFor(quizPath);
 let errors;
 try {
   const quiz = JSON.parse(readFileSync(quizPath, "utf8"));
@@ -35,14 +35,18 @@ try {
 } catch (e) {
   errors = [`could not read the quiz: ${e.message}`];
 }
-if (!existsSync(mdPath)) errors.push(`the lesson file ${relative(root, mdPath)} is missing: write the .md before the .quiz.json`);
+if (!existsSync(pagePath)) errors.push(`the lesson page ${relative(root, pagePath)} is missing: write the .html before the .quiz.json`);
 
 if (errors.length) {
   console.error(`Lesson "${lessonId}" was NOT pushed. Fix ${relative(root, quizPath)}:\n- ${errors.join("\n- ")}`);
   process.exit(2);
 }
 
-const files = [relative(root, mdPath), relative(root, quizPath)];
+// Rebuild the home page so it lists every lesson
+const subjectInfo = readSubjectInfo(root);
+writeFileSync(join(root, "index.html"), renderIndex(collectLessons(root, Object.keys(subjectInfo)), subjectInfo));
+
+const files = [relative(root, pagePath), relative(root, quizPath), "index.html"];
 const isNew = git(root, "ls-files", "--error-unmatch", files[1]).status !== 0;
 git(root, "add", "--", ...files);
 if (git(root, "diff", "--cached", "--quiet").status === 0) {
