@@ -20,7 +20,8 @@ A personal Claude Code plugin that you build once and use in every other project
 | Piece | Type | What it does for you |
 |---|---|---|
 | `scope-project` | 📘 Skill | Asks you questions about an idea, then writes `REQUIREMENTS.md` (must / nice-to-have / out of scope, day-by-day plan, definition of done) |
-| `tutor` | 🤖 Subagent | Explains code Claude just wrote: concepts, why this approach, pros and cons, alternatives, key snippets. Saves each explanation to `docs/explanations/` |
+| `tutor` | 🤖 Subagent | Teaches any topic (project code, CS, maths, physics…) in a short beginner lesson with a quiz. Saves it to the public `lessons` repo |
+| `lessons-sync` | 🪝 Hook | Checks each new lesson's quiz and pushes it to the `lessons` repo automatically |
 | `write-readme` | 📘 Skill | Writes a standard README: pitch, demo GIF slot, Mermaid diagram, how to run, what I learned |
 | `learning-log` | 📘 Skill | At the end of a session, adds what you learned to `LEARNINGS.md` |
 | `interview-prep` | 📘 Skill | Reads your code, asks you 10 interview questions one at a time, grades your answers |
@@ -47,7 +48,7 @@ flowchart LR
     B -->|/plugin install| C[Plugin enabled in every project]
     C --> D{You talk to Claude}
     D -->|"new idea"| E[scope-project → REQUIREMENTS.md]
-    D -->|"explain this"| F[tutor → docs/explanations/]
+    D -->|"explain this"| F[tutor → lessons repo, auto-pushed]
     D -->|Claude edits a file| G[hook → formatter runs]
     D -->|"project done"| H[write-readme, release-checklist, interview-prep]
     F --> I[Project 3: questions for the revision game]
@@ -74,10 +75,13 @@ claude-dev-toolkit/
 ├── agents/
 │   └── tutor.md
 ├── hooks/
-│   ├── hooks.json             # "after Edit/Write, run format.mjs"
+│   ├── hooks.json             # after Edit/Write: lessons-sync.mjs (step 3), format.mjs (step 6)
+│   ├── lessons-sync.mjs       # checks + pushes new lessons to the lessons repo
+│   ├── lessons-lib.mjs        # quiz validation helpers
 │   └── format.mjs             # picks the formatter from the file extension
 ├── tests/
-│   └── format.test.mjs        # tests for the hook script (step 6)
+│   ├── lessons-lib.test.mjs   # tests for lessons validation (step 3)
+│   └── format.test.mjs        # tests for the format hook (step 6)
 ├── README.md
 ├── CHANGELOG.md
 └── LICENSE
@@ -209,9 +213,9 @@ Show a 5-line summary and ask: "Start day 1?"
 
 ---
 
-### Step 3: `tutor` subagent ✅ DONE
+### Step 3: `tutor` subagent + lessons repo ✅ DONE
 
-> **Summary:** Create a separate Claude whose only job is to teach you the general idea behind a piece of code (what a skill is, what a React component is…), using your project's code as the example. Lessons are short and written for a beginner, and end with a quiz of 1-2 general questions per key idea. It works in its own context, so your main conversation stays short, and it can only write in `docs/explanations/`. **Result:** you understand code you didn't write, and each lesson is saved for later revision.
+> **Summary:** Create a separate Claude whose only job is to teach you any topic (code from a project, or a general subject like maths or physics) with a short beginner lesson and a quiz. Every lesson is saved to a public `lessons` repo, sorted by subject and topic, and a hook checks it and pushes it to GitHub automatically. The quizzes are also saved as JSON, so the revision game (Project 3) can use them as its question bank. **Result:** you understand what you build, and every lesson is published and ready for the game.
 
 **Sub-tasks:**
 
@@ -219,70 +223,83 @@ Show a 5-line summary and ask: "Start day 1?"
 |---|---|---|---|
 | 3.1 | Claude | Write `agents/tutor.md` (frontmatter + lesson template) | ✅ |
 | 3.2 | You | Ask the tutor to explain some code | ✅ "Explain how the scope-project skill works" |
-| 3.3 | You | Read the lesson, then try to answer its 3 quiz questions without looking | ⬜ |
-| 3.4 | Claude | Adjust from your feedback | ✅ 4 rounds (see below) |
-| 3.5 | You | Check the file landed in `docs/explanations/` with the right name | ✅ |
-| 3.6 | You | Restart Claude Code, then test the new version on a new topic: "Explain how the tutor subagent works" | ⬜ |
+| 3.3 | You | Read a lesson, then try to answer its quiz without looking | ⬜ |
+| 3.4 | Claude | Adjust from your feedback | ✅ 7 rounds (see below) |
+| 3.5 | You | Check where the file landed | ✅ |
+| 3.6 | You | Restart, test on a new topic: "Explain how the tutor subagent works" | ✅ 56-line lesson, 9 general questions |
+| 3.7 | Claude | Create the `lessons` repo (public, [github.com/E54Sacha/lessons](https://github.com/E54Sacha/lessons)), move the 2 lessons there, add quiz JSON | ✅ |
+| 3.8 | Claude | Write the `lessons-sync` hook + tests (`node --test tests/`) | ✅ 5 tests pass |
+| 3.9 | You | Restart, then ask for a lesson on a non-code topic, e.g. "Teach me about matrices" | ⬜ |
 
-**What the first test taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
-1. writes for a **beginner** CS student (first years), not junior / internship level;
-2. teaches the **general topic**, with this project's code only as the example ("Claude Code skills", not "the scope-project skill");
+**What the tests taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
+1. writes for a **beginner** student (first years), not junior / internship level;
+2. teaches the **general topic**, with one example ("Claude Code skills", not "the scope-project skill");
 3. stays **short and simple**: about 80 lines max, one snippet of 15 lines max, everyday words;
-4. asks quiz questions about the **main topic in general**: "How does Claude decide when to use a skill?", not "What does the scope-project description say?" (too specific) and not "What is a template?" (off topic).
+4. asks quiz questions about the **main topic in general**: "How does Claude decide when to use a skill?", not "What does the scope-project description say?" (too specific) and not "What is a template?" (off topic);
+5. asks **1-2 questions per key idea**, with no maximum;
+6. **mixes formats** (open, true or false, multiple choice, fill in the blank) without labelling them;
+7. teaches **any topic**, not only code, and saves everything to the **lessons repo**.
+
+**The lessons repo** (`C:/Side_project/lessons`, public):
+
+```
+lessons/
+├── .lessons-repo                  # marker: the hook only acts inside this repo
+├── subjects.json                  # allowed subjects: cs, maths, physics, finance, general-knowledge
+├── schema/quiz.schema.json        # format of every .quiz.json
+├── README.md
+└── cs/
+    └── claude-code/
+        ├── skills.md              # lesson (metadata header + sections + quiz)
+        ├── skills.quiz.json       # same quiz, structured for the game
+        ├── subagents.md
+        └── subagents.quiz.json
+```
+
+**Quiz JSON, per question:** `id`, `type` (`open` / `true_false` / `multiple_choice` / `fill_blank`), `question`, `answer` (text, boolean, option index 0-3, or the missing word), `options` (multiple choice), `accept` (other spellings for fill in the blank), `explanation`.
 
 **`agents/tutor.md`, key parts:**
 
 ```markdown
 ---
 name: tutor
-description: Explains code to a beginner developer so they truly understand it, and saves the explanation to docs/explanations/. Use when the user asks to explain, teach, or walk through code ... ("explain this", "how does X work", "I don't get this part").
+description: Teaches a beginner any topic (code from the current project, or a general subject
+  like CS, maths, physics, finance or general knowledge) with a short lesson and a quiz, saved to
+  the lessons repo. Use when the user asks to explain, teach, or walk through code ... or a concept.
 tools: Read, Grep, Glob, Write
 ---
 
-You are a patient tutor for a beginner computer science student. Teach the general
-idea behind the code, and use this project's code as the example.
+- Read subjects.json; save to C:/Side_project/lessons/<subject>/<topic>/<lesson>.md, then .quiz.json
+- Teach the topic in general, then ONE example (code snippet, or a worked example with numbers)
+- Short sentences, everyday words, about 80 lines max. Write only these two files.
 
-Rules:
-- Read the code first. Never guess what it does.
-- Name the kind of thing being explained, explain it in general, then show it in this project.
-- Short sentences, everyday words, every term explained. About 80 lines max.
-- Write ONLY inside docs/explanations/. Never modify source code; mention bugs instead.
-
-Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md (never overwrite) with this template:
-
-# <Topic, in general terms>
-## The idea              ← 3-4 sentences, in general
-## Key words             ← 3-5 terms, one line each
-## How it works          ← 3-6 general steps
-## In this project       ← how the example applies it + ONE snippet (≤ 15 lines)
-## Why use it            ← 2-3 advantages, 1-2 limits
-## Other ways            ← 1-2 alternatives
-## Quiz                  ← 1-2 short general questions per key idea + answers in a <details> block
-## Things worth noticing ← optional: bugs or risks spotted
-## What to ask about next← optional
-
-Return to the main conversation: the file path + a 3-line summary.
+Template: metadata header · The idea · Key words · How it works · Example · Why use it ·
+Other ways · Quiz (+ answers in <details>) · optional: Things worth noticing, What to ask about next
 ```
 
-**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if". **Mixed formats:** open, true or false, multiple choice (4 options, one correct, plausible wrong options) and fill in the blank (no format labels: the shape of the question shows it, true or false is asked as "Is it true that...?"); never more than half in one format; every answer explains why.
+**The `lessons-sync` hook** (`hooks/hooks.json` → `hooks/lessons-sync.mjs`, helpers in `hooks/lessons-lib.mjs`):
+1. Runs after every Write/Edit. Ignores everything except a `.quiz.json` inside a folder with `.lessons-repo`.
+2. Checks the quiz: right folder depth, subject in `subjects.json`, fields match the folder, valid answer for each question type, the `.md` exists.
+3. Invalid → exit code 2: the errors are shown to `tutor`, which fixes the file and writes it again.
+4. Valid → `git add` both files, commit `Add lesson: <subject>/<topic>/<lesson>`, push. If the push fails (offline), it warns and the lesson goes with the next push.
 
 **Test checklist:**
 
-| Type this | You should see |
+| Do this | You should see |
 |---|---|
-| "Explain how the tutor subagent works" (after a restart) | Claude delegates to `tutor` (it says so), a file appears in `docs/explanations/` |
-| Open the file | Title is the general topic ("Claude Code subagents"), all template sections present, about 80 lines or less, quiz answers hidden |
-| Read the quiz | 1-2 short questions per key idea, about subagents in general, none naming a file of this project, in mixed formats (open, true or false, multiple choice, fill in the blank) |
-| Check `git status` | **Nothing changed** outside `docs/explanations/` |
-| Your main conversation | Only a short summary, not the full lesson |
+| `node --test tests/` | 5 tests pass |
+| Restart, then "Teach me about matrices" | A lesson at `lessons/maths/linear-algebra/matrices.md` + `.quiz.json`, with a worked example using numbers |
+| `git -C C:/Side_project/lessons log --oneline -1` | `Add lesson: maths/linear-algebra/matrices` |
+| Open github.com/E54Sacha/lessons | The new lesson is there |
+| `git status` in the project you were in | **Nothing changed** |
 
 **Concepts:**
 - **Separate context window:** the subagent reads lots of files without filling your main conversation. You get back only the result.
-- **Least privilege:** `tools:` restricts what it *can* do. The "only write in docs/explanations/" rule is an instruction, not a hard limit, which is why the test checks `git status`.
-- **Fixed output format:** consistent files = easy to turn into quiz data for Project 3 later. General questions also work there, project-specific ones wouldn't.
+- **Least privilege:** `tutor` has no shell, so it can't push by itself; the hook does it. The "write only these two files" rule is still an instruction, not a hard limit.
+- **Validation at the boundary:** the hook refuses bad data before it reaches the repo, so the game never has to deal with broken quizzes.
 - **Iterating on a prompt:** the first version is never right. Test on a real case, note what's wrong, change one rule at a time.
 
-**Self-check:** Why is `tutor` a subagent and not a skill? Which tool would you remove to make it 100 % read-only, and what would you lose?
+**Self-check:** Why does the hook push instead of `tutor`? Why does `tutor` write the `.md` before the `.quiz.json`? What happens if a quiz has a multiple-choice answer of 5?
 
 ---
 
@@ -428,7 +445,7 @@ Go through these steps IN ORDER. Show the status of each. Stop on any failure.
 
 | # | Who | Task | Time |
 |---|---|---|---|
-| 6.1 | Claude | Write `hooks/hooks.json` | 5 min |
+| 6.1 | Claude | Add the format hook to the existing `hooks/hooks.json` (it already has `lessons-sync`) | 5 min |
 | 6.2 | Claude | Write `hooks/format.mjs` | 20 min |
 | 6.3 | Claude | Write `tests/format.test.mjs` (Node's built-in `node --test`, no dependencies) | 15 min |
 | 6.4 | You | Test in a project **with** Prettier and one **without** | 15 min |
