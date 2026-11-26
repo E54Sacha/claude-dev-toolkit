@@ -4,7 +4,7 @@ A personal Claude Code plugin that you build once and use in every other project
 
 **Time:** 1 day for the first version (≈ 8 h of focused work), then small improvements after each project.
 
-**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · ✅ Step 5 · ✅ Step 6 · ⬜ Step 7
+**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · ✅ Step 5 · ✅ Step 6 · 🟡 Step 7 (released and public; your install test left)
 
 ---
 
@@ -528,8 +528,8 @@ Why always exit 0: a non-zero exit code is shown to Claude as an error, and exit
 | 7.2 | Claude | Finalize README with `write-readme`: install commands, what's inside, GIF slot | ✅ |
 | 7.3 | Claude | Create `CHANGELOG.md` with a `0.1.0` section | ✅ |
 | 7.4 | You | (later) Record a 30-60 s GIF of `scope-project` turning a vague idea into a plan (ScreenToGif on Windows) | 15 min |
-| 7.5 | You | Run `/claude-dev-toolkit:release-checklist` to tag `v0.1.0` | 10 min |
-| 7.6 | You | Make the repo public on GitHub | 2 min |
+| 7.5 | Claude | Release checklist: tests, version, changelog, tag `v0.1.0`, push, GitHub Release | ✅ [v0.1.0](https://github.com/E54Sacha/claude-dev-toolkit/releases/tag/v0.1.0) |
+| 7.6 | Claude | Hide personal email in history (noreply address), make the repo public, add description and topics | ✅ |
 | 7.7 | You | Remove the local install, then install from GitHub with the two commands | 10 min |
 
 **Removing the local install (7.7):** in `/plugin`, uninstall `claude-dev-toolkit` and remove the local marketplace, then restart Claude Code before installing from GitHub, so you're sure you're testing the published version.
