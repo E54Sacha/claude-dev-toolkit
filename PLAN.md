@@ -4,7 +4,7 @@ A personal Claude Code plugin that you build once and use in every other project
 
 **Time:** 1 day for the first version (≈ 8 h of focused work), then small improvements after each project.
 
-**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · 🟡 Step 4 (skills written, waiting for your tests) · ⬜ Step 5 · ⬜ Step 6 · ⬜ Step 7
+**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · 🟡 Step 5 (skills written, waiting for your tests) · ⬜ Step 6 · ⬜ Step 7
 
 ---
 
