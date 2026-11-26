@@ -147,16 +147,16 @@ These lines turn a simple "write me a requirements doc" into a process with chec
 
 ## Quiz
 
-1. A user types: "In my existing React app, I want to build a dark mode toggle." Which exact part of which file should stop `scope-project` from triggering, and why is that part needed?
-2. Why does `SKILL.md` tell Claude to *read* `template.md` in Phase 3 instead of pasting the template directly into `SKILL.md`? Give two reasons.
-3. What would happen if you deleted line 35 of `SKILL.md` ("Do not move to Phase 3 until the user agrees on the scope") and the user's must-haves came to 60 hours against a 20-hour budget?
+1. What does the `description` at the top of `SKILL.md` decide?
+2. Why is the template kept in its own file instead of inside `SKILL.md`?
+3. What happens if your idea needs 60 hours but you only have 20?
 
 <details>
 <summary>Answers</summary>
 
-1. The "Do not use for..." sentence at the end of the `description` in `SKILL.md:3` ("changes to code in an existing project, ... single features"). It matters because the message also contains "I want to build", which is one of the listed trigger phrases. Without a negative rule, the phrase match alone could launch a 7-question project interview for a single feature.
-2. (a) Progressive disclosure: the template only enters the context window when it is actually needed, keeping Phases 1 and 2 lighter. (b) It reduces the risk that Claude starts filling in the document before the questions and scope check are done. A bonus reason: the template can be edited on its own without touching the instructions.
-3. Phase 2 would still flag that the plan is 3 times over budget and propose cuts (line 30 still says "Wait for the user's choice"), but the explicit gate before writing would be gone. Claude could more easily go straight on and write a `REQUIREMENTS.md` with an impossible plan. The skill's main value, an honest scope you can actually finish, would be weakened. Line 30 and line 35 overlap on purpose: having the rule twice makes it more likely the model follows it.
+1. It decides when Claude uses the skill. Claude always reads the description, and starts the skill when your message matches it.
+2. So Claude only loads the template when it needs it (in Phase 3). This keeps Claude's context lighter, and you can change the template without touching the instructions.
+3. In Phase 2, the skill tells you the plan is too big and proposes things to cut. It waits for your choice before writing anything.
 
 </details>
 
