@@ -28,7 +28,7 @@ If an answer is vague ("make it nice", "some features"), ask one follow-up. Othe
 1. Estimate each must-have in hours, assuming the user codes with an AI assistant. Add 20% for setup, deployment and the README.
 2. Compare the total with the time budget.
    - Over budget by more than 20%: say so plainly, show the numbers, and propose specific cuts (move features to nice-to-have, or pick simpler tech). Wait for the user's choice.
-   - Under budget by a lot: say so, and suggest one nice-to-have that would make the project stand out.
+   - Under budget by more than 30%: say so, and suggest one nice-to-have that would make the project stand out.
    - Close to budget: say it fits, and move on.
 3. Flag any tech choice that is risky for the time budget (new language, unfamiliar framework, paid API), and offer a safer option.
 
@@ -41,7 +41,7 @@ Do not move to Phase 3 until the user agrees on the scope.
 3. Rules:
    - Write must-haves as things a user can do ("A visitor can filter projects by tag"), not as tech tasks.
    - Every day in the plan ends on something demoable.
-   - Every definition-of-done item can be checked by someone else.
+   - Every definition-of-done item can be checked by someone else. Keep the README and deployment items only when they fit the "why" from Phase 1 (a learning exercise may need neither).
    - Use the user's answers, not your own ideas. If you add something they didn't ask for, put it in nice-to-have.
 4. Save it as `REQUIREMENTS.md` at the project root (the current working directory unless the user said otherwise).
    - If a `REQUIREMENTS.md` already exists, read it, tell the user what would change, and ask before overwriting.

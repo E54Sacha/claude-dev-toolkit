@@ -4,7 +4,7 @@ A personal Claude Code plugin that you build once and use in every other project
 
 **Time:** 1 day for the first version (≈ 8 h of focused work), then small improvements after each project.
 
-**Progress:** ✅ Step 1 · ⬜ Step 2 · ⬜ Step 3 · ⬜ Step 4 · ⬜ Step 5 · ⬜ Step 6 · ⬜ Step 7
+**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ⬜ Step 4 · ⬜ Step 5 · ⬜ Step 6 · ⬜ Step 7
 
 ---
 
@@ -377,7 +377,7 @@ Go through these steps IN ORDER. Show the status of each. Stop on any failure.
 1. Working tree clean? (git status)
 2. Tests pass? (find and run the project's test command)
 3. Choose version: show current version, propose patch/minor/major with reasons, wait for choice.
-4. Bump version in every manifest (package.json, plugin.json, marketplace.json, pyproject.toml…).
+4. Bump version in every manifest (package.json, plugin.json, marketplace.json, pyproject.toml…), then grep for the old version to catch any other file that hard-codes it.
 5. Update CHANGELOG.md: new section from commits since the last tag (git log <last-tag>..HEAD).
 6. Commit "Release vX.Y.Z".
 7. ⚠️ STOP. Ask for explicit confirmation before anything public.

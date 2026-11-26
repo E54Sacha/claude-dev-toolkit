@@ -50,8 +50,8 @@ Each day ends on something you can demo.
 Every item must be testable by someone else.
 
 - [ ] {{e.g. "A visitor can open the site on a phone and see all projects"}}
-- [ ] README with a demo GIF and how to run it
-- [ ] Deployed / installable: {{where}}
+- [ ] {{Portfolio pieces only: "README with a demo GIF and how to run it"}}
+- [ ] {{If it ships: "Deployed / installable at <where>"}}
 
 ## Risks
 
