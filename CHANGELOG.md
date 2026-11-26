@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **`retro` skill:** end-of-project retrospective that turns what had to be repeated or kept breaking into concrete toolkit changes, saved in `RETRO.md` and optionally as GitHub issues.
+
 ## [0.1.0] - 2026-11-26
 
 First release.

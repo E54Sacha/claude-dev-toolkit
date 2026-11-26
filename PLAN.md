@@ -553,7 +553,9 @@ Why always exit 0: a non-zero exit code is shown to Claude as an error, and exit
 
 > **Summary:** After each project, turn what you had to repeat to Claude, or the mistakes it kept making, into a new skill, a better description, a hook or a subagent. Bump the version and log it. **Result:** the toolkit grows with your projects, and the changelog tells that story.
 
-At the end of each project, ask: *"what did I have to repeat to Claude, or what mistake did it keep making?"*
+At the end of each project, run the **`retro` skill** (*"let's do a retro"*): it asks *"what did I have to repeat to Claude, or what mistake did it keep making?"*, reads the evidence (LEARNINGS.md, git log), proposes toolkit changes and saves them in `RETRO.md` (and optionally as GitHub issues).
+
+**v0.2.0 (in progress):** `retro` skill ✅ written.
 
 | If… | Then add… |
 |---|---|

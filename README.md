@@ -30,6 +30,7 @@ Restart Claude Code. To use the `tutor` lessons, run `/claude-dev-toolkit:setup-
 | 📘 **`learning-log`** skill | Proposes what you learned in the session, and appends the entries you keep to `LEARNINGS.md`. | *"Let's wrap up, log what I learned"* |
 | 📘 **`interview-prep`** skill | Mock interview on your own project: 10 questions one at a time, each answer graded, then a score and topics to revise. | *"Test me on this project"* (add `harder` for mid-level) |
 | 📘 **`release-checklist`** skill | Tests, version bump, changelog, commit, tag, push, and it stops for your OK before anything public. Only starts from its slash command. | `/claude-dev-toolkit:release-checklist` |
+| 📘 **`retro`** skill | End-of-project retrospective: finds what you had to repeat or what kept breaking, and turns each into a toolkit change (saved in `RETRO.md`, optionally as GitHub issues). | *"Let's do a retro"* |
 | 📘 **`setup-lessons`** skill | Creates your lessons repo from a template, or connects an existing one. | `/claude-dev-toolkit:setup-lessons` |
 | 🪝 **Format hook** | After every edit, formats the file with the project's own Prettier (JS, TS, JSON, CSS, Markdown…) or Ruff (Python). Does nothing if they aren't installed. | Automatic |
 | 🪝 **`lessons-sync` hook** | Checks every new lesson's quiz, rebuilds the lessons home page, then commits and pushes the lesson. A broken quiz is never published. | Automatic |
