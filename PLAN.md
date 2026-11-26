@@ -4,7 +4,7 @@ A personal Claude Code plugin that you build once and use in every other project
 
 **Time:** 1 day for the first version (≈ 8 h of focused work), then small improvements after each project.
 
-**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · ✅ Step 5 · 🟡 Step 6 (hook written, 12 tests pass, waiting for your tests) · ⬜ Step 7
+**Progress:** ✅ Step 1 · ✅ Step 2 · ✅ Step 3 · ✅ Step 4 · ✅ Step 5 · ✅ Step 6 · ⬜ Step 7
 
 ---
 
@@ -443,7 +443,7 @@ Go through these steps IN ORDER. Show the status of each. Stop on any failure.
 
 ---
 
-### Step 6: Format hook (≈ 1 h)
+### Step 6: Format hook ✅ DONE
 
 > **Summary:** Add a hook that Claude Code runs automatically after every file edit: a small Node script picks Prettier or Ruff from the file extension and formats the file. If the formatter isn't there, it silently does nothing. **Result:** code is always formatted, without anyone having to remember.
 
@@ -454,8 +454,8 @@ Go through these steps IN ORDER. Show the status of each. Stop on any failure.
 | 6.1 | Claude | Add the format hook to the existing `hooks/hooks.json` (it already has `lessons-sync`) | 5 min |
 | 6.2 | Claude | Write `hooks/format.mjs` | 20 min |
 | 6.3 | Claude | Write `tests/format.test.mjs` (Node's built-in `node --test`, no dependencies) | 15 min |
-| 6.4 | You | Test in a project **with** Prettier and one **without** | 15 min |
-| 6.5 | You | Test with a Python file (install Ruff with `pip install ruff` if needed) | 5 min |
+| 6.4 | Claude | Test in a project **with** Prettier and one **without** | ✅ JS (Write and Edit) and JSON formatted by Prettier 3.3.3; untouched without Prettier; .txt untouched; no errors |
+| 6.5 | You | Test with a Python file (install Ruff with `pip install ruff` if needed) | 🟡 Without Ruff: file left as is, no error. With Ruff: not tested (Python/Ruff not installed) |
 
 **`hooks/hooks.json`:**
 
