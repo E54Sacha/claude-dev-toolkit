@@ -126,7 +126,7 @@ Each step has: **sub-tasks** (who does what), **file contents** (the key parts, 
 
 ---
 
-### Step 2: `scope-project` skill (≈ 1.5 h)
+### Step 2: `scope-project` skill ✅ DONE
 
 > **Summary:** Write the skill that turns a vague idea into a clear `REQUIREMENTS.md`. It asks you grouped questions first, pushes back if the scope is too big for the time you have, then fills a fixed template. Every later project starts with it. **Result:** a one-line idea becomes a plan you'd actually follow.
 
