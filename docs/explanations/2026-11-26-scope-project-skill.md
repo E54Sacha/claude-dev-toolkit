@@ -147,16 +147,16 @@ These lines turn a simple "write me a requirements doc" into a process with chec
 
 ## Quiz
 
-1. What is a template, in programming or writing documents?
-2. Why do developers often load things only when they are needed (lazy loading)?
-3. What happens if a project's scope is bigger than the time you have?
+1. What is a skill in Claude Code?
+2. How does Claude decide when to use a skill?
+3. What happens if a skill's description is too vague?
 
 <details>
 <summary>Answers</summary>
 
-1. A reusable model with blanks to fill in. Every document made from it has the same structure, like the REQUIREMENTS.md template in this skill.
-2. It saves memory and time: you don't pay for something until you use it. Here, the template is only read when the skill reaches the writing phase.
-3. You usually end up with nothing finished. It's better to cut features early and ship a smaller version that works.
+1. A folder with a `SKILL.md` file: a short description, then instructions Claude follows for one kind of task. You write it once and reuse it, instead of repeating the same instructions every time.
+2. Claude always reads every skill's description. When your message matches one, it loads that skill's full instructions. You can also start a skill yourself with its slash command.
+3. Claude doesn't recognize when to use it, so the skill rarely starts by itself (or starts at the wrong time). The fix is to write the words you'd actually type into the description.
 
 </details>
 

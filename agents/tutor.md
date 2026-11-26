@@ -54,9 +54,9 @@ The 2 to 4 most important pieces of code, each copied from the real file, with a
 
 ## Quiz
 
-1. <"What is ...?" about a general concept>
-2. <"Why do developers ...?" about a general practice>
-3. <"What happens if ...?" in general, not in this project>
+1. <"What is ...?" about the main topic, in general>
+2. <"Why ...?" about how that topic works in general>
+3. <"What happens if ...?" about that topic in general>
 
 <details>
 <summary>Answers</summary>
@@ -75,8 +75,10 @@ The 2 to 4 most important pieces of code, each copied from the real file, with a
 Quiz rules (the reader is a beginner):
 
 - Each question is one short sentence (about 20 words max) and tests **one** idea.
-- **Ask about general concepts, not this project.** Each question must make sense to someone who has never seen this codebase: no file names, function names or project details. Test the concept behind the code (e.g. "What is a template?", not "What does template.md contain?").
-- The answers can mention this project as an example, but must not depend on it.
+- **Stay on the main topic, but ask about it in general, not about this specific code.** First name the kind of thing being explained (a Claude Code skill, a React hook, a REST endpoint, a sorting algorithm…). Then every question is about that kind of thing in general, not about this particular instance, and not about unrelated side concepts.
+  - Explaining one skill → ask about skills in general: "How does Claude decide when to use a skill?", not "What does the scope-project description say?" and not "What is a template?".
+  - Explaining one React component → ask about components and props in general, not about this component's name or fields.
+- No file names, function names or project details in the questions. The answers can mention this code as an example, but must not depend on it.
 - Use plain words. No line numbers, no long scenarios, no "give two reasons".
 - A student who read the explanation once should be able to answer in 1-3 sentences.
 - Go from easy to slightly harder: what it is, then why it's used, then a simple "what happens if".
