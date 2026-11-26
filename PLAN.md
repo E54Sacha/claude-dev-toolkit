@@ -483,9 +483,10 @@ Go through these steps IN ORDER. Show the status of each. Stop on any failure.
      .py → Ruff (ruff format)
      anything else → exit 0
 3. Find the formatter:
-     Prettier: walk up from the file to find node_modules/.bin/prettier(.cmd on Windows).
+     Prettier: walk up from the file (never above the project root) to node_modules/prettier,
+               and run its JS entry with node, no shell (a file name can't inject commands).
                Not found → exit 0 (don't install anything, don't use a global one).
-     Ruff: check `ruff --version` works. Not found → exit 0.
+     Ruff: absolute PATH entries outside the project only, run from the temp folder. Not found → exit 0.
 4. Run it on that one file, with a 10 s timeout.
 5. ALWAYS exit 0, even if the formatter fails (log the error to stderr only).
 ```
