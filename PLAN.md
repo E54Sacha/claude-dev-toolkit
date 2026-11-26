@@ -264,7 +264,7 @@ Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md (never overwrite) with this
 Return to the main conversation: the file path + a 3-line summary.
 ```
 
-**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if".
+**Quiz rules:** 1 or 2 questions per key idea (1 if small, 2 if big), no maximum, the quiz doesn't count toward the 80-line limit. One short sentence per question, about the main topic in general (no file or function names), answerable in 1-3 sentences, mixing "what is", "why" and "what happens if". **Mixed formats:** open, true or false, multiple choice (4 options, one correct, plausible wrong options) and fill in the blank, each labelled; never more than half in one format; every answer explains why.
 
 **Test checklist:**
 
@@ -272,7 +272,7 @@ Return to the main conversation: the file path + a 3-line summary.
 |---|---|
 | "Explain how the tutor subagent works" (after a restart) | Claude delegates to `tutor` (it says so), a file appears in `docs/explanations/` |
 | Open the file | Title is the general topic ("Claude Code subagents"), all template sections present, about 80 lines or less, quiz answers hidden |
-| Read the quiz | 1-2 short questions per key idea, about subagents in general, none naming a file of this project |
+| Read the quiz | 1-2 short questions per key idea, about subagents in general, none naming a file of this project, in mixed formats (open, true or false, multiple choice, fill in the blank) |
 | Check `git status` | **Nothing changed** outside `docs/explanations/` |
 | Your main conversation | Only a short summary, not the full lesson |
 

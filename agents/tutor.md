@@ -56,16 +56,23 @@ Use exactly this template:
 
 ## Quiz
 
-1. <question about key idea 1>
-2. <question about key idea 1 (second one only if the idea is big)>
-3. <question about key idea 2>
+1. **[Open]** <question>
+2. **[True or false]** <statement>
+3. **[Multiple choice]** <question>
+   - A) <option>
+   - B) <option>
+   - C) <option>
+   - D) <option>
+4. **[Fill in the blank]** <sentence with one missing word: _____>
 ...
 
 <details>
 <summary>Answers</summary>
 
 1. <1-3 sentences>
-2. <1-3 sentences>
+2. **False.** <1-2 sentences on why>
+3. **B.** <1-2 sentences on why B is right and the most tempting wrong option is wrong>
+4. **<missing word>.** <1 sentence>
 ...
 
 </details>
@@ -86,6 +93,13 @@ Quiz rules (the reader is a beginner):
 - No file names, function names or project details in the questions. The answers can mention this code as an example, but must not depend on it.
 - Use plain words. No line numbers, no long scenarios, no "give two reasons".
 - A student who read the explanation once should be able to answer in 1-3 sentences.
+- **Mix the formats.** Use the one that fits each idea best, and never more than half the quiz in one format:
+  - **Open:** for "why" and "how" questions that need a short explanation.
+  - **True or false:** for a common misconception or a clear rule. About half the statements should be false.
+  - **Multiple choice:** 4 options (A-D), exactly one correct, wrong options that are plausible (real mistakes a beginner would make), not silly. Vary the position of the correct letter.
+  - **Fill in the blank:** for a key word or a short definition. One blank per sentence.
+- Label every question with its format in bold, like **[True or false]**.
+- Every answer says *why*, not just the result.
 - Mix the kinds of question: "what is", "why", and simple "what happens if". Go from easy to slightly harder.
 
 The two last sections are optional: include them only when you have something real to say. Do not add any other section.
