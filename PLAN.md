@@ -209,63 +209,78 @@ Show a 5-line summary and ask: "Start day 1?"
 
 ---
 
-### Step 3: `tutor` subagent (≈ 1.5 h)
+### Step 3: `tutor` subagent ✅ DONE
 
-> **Summary:** Create a separate Claude whose only job is to explain code to you: concepts, why this approach, alternatives, key snippets and 3 quiz questions. It works in its own context, so your main conversation stays short, and it can only write in `docs/explanations/`. **Result:** you understand code you didn't write, and each explanation is saved for later revision.
+> **Summary:** Create a separate Claude whose only job is to teach you the general idea behind a piece of code (what a skill is, what a React component is…), using your project's code as the example. Lessons are short and written for a beginner, and end with 3 general quiz questions. It works in its own context, so your main conversation stays short, and it can only write in `docs/explanations/`. **Result:** you understand code you didn't write, and each lesson is saved for later revision.
 
 **Sub-tasks:**
 
-| # | Who | Task | Time |
+| # | Who | Task | Status |
 |---|---|---|---|
-| 3.1 | Claude | Write `agents/tutor.md` (frontmatter + explanation template) | 25 min |
-| 3.2 | You | Pick code you didn't write (e.g. `hooks/format.mjs` later, or any open-source file) and ask the tutor to explain it | 20 min |
-| 3.3 | You | Read the explanation, then try to answer its 3 quiz questions without looking | 15 min |
-| 3.4 | Claude | Adjust: too long? too shallow? jargon not explained? | 15 min |
-| 3.5 | You | Check the file landed in `docs/explanations/` with the right name | 5 min |
+| 3.1 | Claude | Write `agents/tutor.md` (frontmatter + lesson template) | ✅ |
+| 3.2 | You | Ask the tutor to explain some code | ✅ "Explain how the scope-project skill works" |
+| 3.3 | You | Read the lesson, then try to answer its 3 quiz questions without looking | ⬜ |
+| 3.4 | Claude | Adjust from your feedback | ✅ 4 rounds (see below) |
+| 3.5 | You | Check the file landed in `docs/explanations/` with the right name | ✅ |
+| 3.6 | You | Restart Claude Code, then test the new version on a new topic: "Explain how the tutor subagent works" | ⬜ |
+
+**What the first test taught us (task 3.4):** the first version wrote a 167-line, project-specific lesson with interview-level questions. After your feedback, `tutor` now:
+1. writes for a **beginner** CS student (first years), not junior / internship level;
+2. teaches the **general topic**, with this project's code only as the example ("Claude Code skills", not "the scope-project skill");
+3. stays **short and simple**: about 80 lines max, one snippet of 15 lines max, everyday words;
+4. asks quiz questions about the **main topic in general**: "How does Claude decide when to use a skill?", not "What does the scope-project description say?" (too specific) and not "What is a template?" (off topic).
 
 **`agents/tutor.md`, key parts:**
 
 ```markdown
 ---
 name: tutor
-description: Explains code to a junior developer so they truly understand it. Use when the user asks to explain, teach, or walk through code, a file, a function, or a feature Claude just built.
+description: Explains code to a beginner developer so they truly understand it, and saves the explanation to docs/explanations/. Use when the user asks to explain, teach, or walk through code ... ("explain this", "how does X work", "I don't get this part").
 tools: Read, Grep, Glob, Write
 ---
 
-You are a patient tutor for a computer science student (junior level).
+You are a patient tutor for a beginner computer science student. Teach the general
+idea behind the code, and use this project's code as the example.
 
 Rules:
-- Read the code first (Read, Grep, Glob). Never guess what it does.
-- You may ONLY write inside docs/explanations/. Never modify source code.
-- Explain every term the first time you use it.
-- Max ~400 lines per explanation. Prefer one clear example over three vague ones.
+- Read the code first. Never guess what it does.
+- Name the kind of thing being explained, explain it in general, then show it in this project.
+- Short sentences, everyday words, every term explained. About 80 lines max.
+- Write ONLY inside docs/explanations/. Never modify source code; mention bugs instead.
 
-Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md using exactly this template:
+Save to docs/explanations/YYYY-MM-DD-<topic-slug>.md (never overwrite) with this template:
 
-# <Topic>
-## In one paragraph          ← what it does, for a non-programmer
-## Concepts involved         ← each: name, 2-line definition, where it appears here
-## Why this approach         ← with pros and cons
-## Alternatives              ← 2-3 options, when you'd pick each
-## Key snippets              ← the 2-4 most important pieces, commented line by line
-## Quiz                      ← 3 questions + answers in a <details> block
+# <Topic, in general terms>
+## The idea              ← 3-4 sentences, in general
+## Key words             ← 3-5 terms, one line each
+## How it works          ← 3-6 general steps
+## In this project       ← how the example applies it + ONE snippet (≤ 15 lines)
+## Why use it            ← 2-3 advantages, 1-2 limits
+## Other ways            ← 1-2 alternatives
+## Quiz                  ← 3 short general questions + answers in a <details> block
+## Things worth noticing ← optional: bugs or risks spotted
+## What to ask about next← optional
 
 Return to the main conversation: the file path + a 3-line summary.
 ```
+
+**Quiz rules:** one short sentence per question, one idea each, about the main topic in general (no file or function names), answerable in 1-3 sentences, ordered what it is → why → what happens if.
 
 **Test checklist:**
 
 | Type this | You should see |
 |---|---|
-| "Explain how the hello skill gets loaded" | Claude delegates to `tutor` (it says so), a file appears in `docs/explanations/` |
-| Open the file | All 6 sections present, quiz answers hidden in `<details>` |
-| Check `git diff` on source files | **Nothing changed** outside `docs/explanations/` |
-| Your main conversation | Only a short summary, not the full explanation |
+| "Explain how the tutor subagent works" (after a restart) | Claude delegates to `tutor` (it says so), a file appears in `docs/explanations/` |
+| Open the file | Title is the general topic ("Claude Code subagents"), all template sections present, about 80 lines or less, quiz answers hidden |
+| Read the quiz | 3 short questions about subagents in general, none naming a file of this project |
+| Check `git status` | **Nothing changed** outside `docs/explanations/` |
+| Your main conversation | Only a short summary, not the full lesson |
 
 **Concepts:**
 - **Separate context window:** the subagent reads lots of files without filling your main conversation. You get back only the result.
-- **Least privilege:** `tools:` restricts what it *can* do. The "only write in docs/explanations/" rule is an instruction, not a hard limit, which is why the test checks `git diff`.
-- **Fixed output format:** consistent files = easy to turn into quiz data for Project 3 later.
+- **Least privilege:** `tools:` restricts what it *can* do. The "only write in docs/explanations/" rule is an instruction, not a hard limit, which is why the test checks `git status`.
+- **Fixed output format:** consistent files = easy to turn into quiz data for Project 3 later. General questions also work there, project-specific ones wouldn't.
+- **Iterating on a prompt:** the first version is never right. Test on a real case, note what's wrong, change one rule at a time.
 
 **Self-check:** Why is `tutor` a subagent and not a skill? Which tool would you remove to make it 100 % read-only, and what would you lose?
 
