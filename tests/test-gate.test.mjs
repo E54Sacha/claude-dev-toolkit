@@ -5,10 +5,11 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findSuites, isGitCommit, runSuites, tail } from "../hooks/test-gate-lib.mjs";
+import { findSuites, isGitCommit, isTrusted, runSuites, tail } from "../hooks/test-gate-lib.mjs";
 
 const HOOK = fileURLToPath(new URL("../hooks/test-gate.mjs", import.meta.url));
-const runHook = (event) => spawnSync(process.execPath, [HOOK], { input: JSON.stringify(event), encoding: "utf8" });
+const runHook = (event) =>
+  spawnSync(process.execPath, [HOOK], { input: JSON.stringify(event), encoding: "utf8", env: { ...process.env, TEST_GATE_CONFIG: join(tmpdir(), "no-such-test-gate.json") } });
 const tmp = () => mkdtempSync(join(tmpdir(), "gate-"));
 
 test("spots git commit in all its forms", () => {
@@ -22,6 +23,31 @@ test("spots git commit in all its forms", () => {
   for (const cmd of ["git status", "git log --oneline", "echo committed", "git commit-tree abc", "git commit --dry-run", "npm run commitlint", undefined]) {
     assert.ok(!isGitCommit(cmd), String(cmd));
   }
+});
+
+test("only repos listed in the config are trusted", () => {
+  const dir = tmp();
+  const config = join(dir, "test-gate.json");
+  assert.equal(isTrusted("C:/work/app", config), false); // no config file
+  writeFileSync(config, JSON.stringify({ repos: ["C:\\work\\App\\"] }));
+  assert.equal(isTrusted("c:/work/app", config), true);
+  assert.equal(isTrusted("C:/work/other", config), false);
+  writeFileSync(config, "not json");
+  assert.equal(isTrusted("C:/work/app", config), false);
+});
+
+test("refuses a virtual environment committed to the repo", () => {
+  const root = tmp();
+  spawnSync("git", ["init", "-q"], { cwd: root });
+  const bin = join(root, ".venv", process.platform === "win32" ? "Scripts" : "bin");
+  mkdirSync(bin, { recursive: true });
+  const python = join(bin, process.platform === "win32" ? "python.exe" : "python");
+  writeFileSync(python, "");
+  writeFileSync(join(root, "pytest.ini"), "[pytest]\n");
+  spawnSync("git", ["add", "-f", python], { cwd: root });
+  const { suites, skipped } = findSuites(root);
+  assert.equal(suites.length, 0);
+  assert.match(skipped[0], /committed to git/);
 });
 
 test("finds pytest with its venv and npm test scripts, one level deep", () => {
@@ -46,8 +72,9 @@ test("tail keeps the end of the output", () => {
   assert.equal(tail("a\nb\nc\n", 2), "b\nc");
 });
 
-test("lets other commands and commits without tests through", () => {
+test("lets other commands, untrusted repos and repos without tests through", () => {
   const repo = tmp();
+  writeFileSync(join(repo, "pytest.ini"), "[pytest]\n"); // has tests, but the repo isn't opted in
   spawnSync("git", ["init", "-q"], { cwd: repo });
   assert.equal(runHook({ tool_name: "Bash", tool_input: { command: "ls" }, cwd: repo }).status, 0);
   assert.equal(runHook({ tool_name: "Bash", tool_input: { command: "git commit -m x" }, cwd: repo }).status, 0);

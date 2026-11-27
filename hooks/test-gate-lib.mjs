@@ -1,6 +1,34 @@
 // Pure helpers for test-gate.mjs, kept separate so they can be unit-tested.
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { homedir } from "node:os";
+import { join, resolve } from "node:path";
+
+/** ~/.claude/test-gate.json: {"repos": ["C:/path/to/repo", ...]}. Only these repos get their tests run. */
+export function configPath() {
+  return process.env.TEST_GATE_CONFIG || join(homedir(), ".claude", "test-gate.json");
+}
+
+// Compare paths case-insensitively with forward slashes: "C:\Work\App\" and "c:/work/app" are the same repo.
+const norm = (p) => resolve(p).replace(/\\/g, "/").replace(/\/$/, "").toLowerCase();
+
+/**
+ * Running a repo's tests runs that repo's code, so the gate is opt-in: a repo you just cloned
+ * must never execute anything because Claude committed in it.
+ */
+export function isTrusted(root, path = configPath()) {
+  try {
+    const repos = JSON.parse(readFileSync(path, "utf8")).repos;
+    return Array.isArray(repos) && repos.some((r) => typeof r === "string" && norm(r) === norm(root));
+  } catch {
+    return false;
+  }
+}
+
+/** True if git tracks this path (a committed virtual environment could hide any program). */
+export function isTracked(root, path) {
+  return spawnSync("git", ["ls-files", "--error-unmatch", path], { cwd: root, encoding: "utf8" }).status === 0;
+}
 
 /** True if a shell command runs `git commit` (also after `&&`, `;`, or with `git -C dir commit`). */
 export function isGitCommit(command) {
@@ -57,7 +85,8 @@ export function findSuites(root) {
   for (const dir of dirs) {
     if (hasPytestConfig(dir) || existsSync(join(dir, "tests", "conftest.py"))) {
       const python = venvPython(dir);
-      if (python) suites.push({ dir, label: "pytest", file: python, args: ["-m", "pytest", "-q", "-x", "--no-header", "-p", "no:cacheprovider"] });
+      if (python && isTracked(root, python)) skipped.push(`${dir}: its .venv is committed to git, refusing to run it`);
+      else if (python) suites.push({ dir, label: "pytest", file: python, args: ["-m", "pytest", "-q", "-x", "--no-header", "-p", "no:cacheprovider"] });
       else skipped.push(`${dir}: pytest config found but no .venv to run it with`);
     }
     if (npmTestScript(dir)) suites.push({ dir, label: "npm test", file: "npm", args: ["test", "--silent"] });

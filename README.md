@@ -34,7 +34,7 @@ Restart Claude Code. To use the `tutor` lessons, run `/claude-dev-toolkit:setup-
 | 📘 **`add-project-to-portfolio`** skill | Writes or updates a finished project's card on my portfolio site (pitch, proof metrics, tech, links, in English and French), suggests a resume bullet and the repo description, then builds and pushes the site. Made for my own portfolio. | *"Add this project to my portfolio"* |
 | 📘 **`setup-lessons`** skill | Creates your lessons repo from a template, or connects an existing one. | `/claude-dev-toolkit:setup-lessons` |
 | 🪝 **Format hook** | After every edit, formats the file with the project's own Prettier (JS, TS, JSON, CSS, Markdown…) or Ruff (Python). Does nothing if they aren't installed. | Automatic |
-| 🪝 **Test gate** hook | Before Claude runs `git commit`, runs the repo's tests (pytest with the folder's own `.venv`, `npm test`) at the root and one level down; if they fail, the commit is blocked and Claude gets the failing output. No tests found: the commit goes through. | Automatic, on every commit |
+| 🪝 **Test gate** hook | Before Claude runs `git commit`, runs the repo's tests (pytest with the folder's own `.venv`, `npm test`) at the root and one level down; if they fail, the commit is blocked and Claude gets the failing output. Opt-in per repo (running tests runs the repo's code): list the repo in `~/.claude/test-gate.json` as `{"repos": ["C:/path/to/repo"]}`. | Automatic, on every commit in a listed repo |
 | 🪝 **`lessons-sync` hook** | Checks every new lesson's quiz, rebuilds the lessons home page, then commits and pushes the lesson. A broken quiz is never published. | Automatic |
 
 Example of lessons made with `tutor`: [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/).
