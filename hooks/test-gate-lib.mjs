@@ -1,6 +1,6 @@
 // Pure helpers for test-gate.mjs, kept separate so they can be unit-tested.
 import { spawnSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -47,6 +47,16 @@ export function venvPython(dir) {
   return null;
 }
 
+/** True if the venv folder really lives inside dir (not a link to somewhere else). */
+export function venvIsLocal(dir, python) {
+  try {
+    const venvDir = realpathSync(join(python, "..", ".."));
+    return venvDir.startsWith(realpathSync(dir));
+  } catch {
+    return false;
+  }
+}
+
 function hasPytestConfig(dir) {
   if (existsSync(join(dir, "pytest.ini"))) return true;
   for (const file of ["pyproject.toml", "setup.cfg", "tox.ini"]) {
@@ -76,7 +86,8 @@ function npmTestScript(dir) {
 export function findSuites(root) {
   const dirs = [root];
   for (const entry of readdirSync(root, { withFileTypes: true })) {
-    if (entry.isDirectory() && !entry.name.startsWith(".") && !["node_modules", "venv", "dist", "build"].includes(entry.name)) {
+    // A folder with its own .git (nested repo or submodule) is another project: not covered by the opt-in.
+    if (entry.isDirectory() && !entry.name.startsWith(".") && !["node_modules", "venv", "dist", "build"].includes(entry.name) && !existsSync(join(root, entry.name, ".git"))) {
       dirs.push(join(root, entry.name));
     }
   }
@@ -85,7 +96,7 @@ export function findSuites(root) {
   for (const dir of dirs) {
     if (hasPytestConfig(dir) || existsSync(join(dir, "tests", "conftest.py"))) {
       const python = venvPython(dir);
-      if (python && isTracked(root, python)) skipped.push(`${dir}: its .venv is committed to git, refusing to run it`);
+      if (python && (isTracked(root, python) || !venvIsLocal(dir, python))) skipped.push(`${dir}: its .venv is committed to git or links outside the folder, refusing to run it`);
       else if (python) suites.push({ dir, label: "pytest", file: python, args: ["-m", "pytest", "-q", "-x", "--no-header", "-p", "no:cacheprovider"] });
       else skipped.push(`${dir}: pytest config found but no .venv to run it with`);
     }
