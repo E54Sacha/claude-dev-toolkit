@@ -6,6 +6,9 @@
 - **`go-public` skill:** makes a private repo public safely: author emails and secrets checked across the whole history, only the needed commits rewritten, force-push with an explicit lease, verification on GitHub, then the visibility change, each irreversible step confirmed first (from the habit-tracker retro).
 - **Test gate hook:** before Claude runs `git commit`, runs the repo's tests (pytest with the folder's own `.venv`, `npm test` scripts, at the root and one level down) and blocks the commit with the failing output if they fail. Opt-in per repo through `~/.claude/test-gate.json`, since running tests runs the repo's code; a virtual environment committed inside the repo is never run.
 
+### Changed
+- **Session start:** when you ask to learn something or have it explained, Claude now hands it straight to the tutor (beginner level by default) instead of asking questions first.
+
 ## [0.2.0] - 2026-11-27
 
 ### Added
