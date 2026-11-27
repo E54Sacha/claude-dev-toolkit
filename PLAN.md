@@ -557,6 +557,8 @@ At the end of each project, run the **`retro` skill** (*"let's do a retro"*): it
 
 **v0.2.0 (released 2026-11-27):** `retro` skill ✅ written · `add-project-to-portfolio` skill ✅ written (Project 1).
 
+**v0.3.0 (in progress):** test gate hook ✅ (Project 2) · `go-public` skill ✅ (habit-tracker retro).
+
 | If… | Then add… |
 |---|---|
 | You typed the same instructions twice | A new skill, or a section in an existing one |
