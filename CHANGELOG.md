@@ -4,6 +4,7 @@
 
 ### Added
 - **`retro` skill:** end-of-project retrospective that turns what had to be repeated or kept breaking into concrete toolkit changes, saved in `RETRO.md` and optionally as GitHub issues.
+- **`add-project-to-portfolio` skill:** writes or updates a finished project's card on my portfolio (pitch, proof metrics, tech badges, links, in English and French) using only checkable facts, prints a resume bullet, sets the GitHub description and topics, then lints, builds, commits and pushes the site.
 
 ## [0.1.0] - 2026-11-26
 

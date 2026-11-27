@@ -555,7 +555,7 @@ Why always exit 0: a non-zero exit code is shown to Claude as an error, and exit
 
 At the end of each project, run the **`retro` skill** (*"let's do a retro"*): it asks *"what did I have to repeat to Claude, or what mistake did it keep making?"*, reads the evidence (LEARNINGS.md, git log), proposes toolkit changes and saves them in `RETRO.md` (and optionally as GitHub issues).
 
-**v0.2.0 (in progress):** `retro` skill ✅ written.
+**v0.2.0 (in progress):** `retro` skill ✅ written · `add-project-to-portfolio` skill ✅ written (Project 1).
 
 | If… | Then add… |
 |---|---|
