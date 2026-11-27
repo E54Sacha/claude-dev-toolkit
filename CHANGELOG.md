@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.3.0] - 2026-11-27
 
 ### Added
 - **`go-public` skill:** makes a private repo public safely: author emails and secrets checked across the whole history, only the needed commits rewritten, force-push with an explicit lease, verification on GitHub, then the visibility change, each irreversible step confirmed first (from the habit-tracker retro).
