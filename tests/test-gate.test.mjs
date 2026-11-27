@@ -61,6 +61,8 @@ test("finds pytest with its venv and npm test scripts, one level deep", () => {
   writeFileSync(join(root, "docs", "package.json"), JSON.stringify({ scripts: { test: 'echo "Error: no test specified" && exit 1' } }));
   mkdirSync(join(root, "tool"));
   writeFileSync(join(root, "tool", "pytest.ini"), "[pytest]\n");
+  mkdirSync(join(root, "vendored", ".git"), { recursive: true }); // a nested repo: never scanned
+  writeFileSync(join(root, "vendored", "package.json"), JSON.stringify({ scripts: { test: "node evil.js" } }));
 
   const { suites, skipped } = findSuites(root);
   assert.deepEqual(suites.map((s) => [s.label, s.dir]), [["pytest", join(root, "api")], ["npm test", join(root, "web")]]);
