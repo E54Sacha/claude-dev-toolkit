@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **Test gate hook:** before Claude runs `git commit`, runs the repo's tests (pytest with the folder's own `.venv`, `npm test` scripts, at the root and one level down) and blocks the commit with the failing output if they fail. Commits in repos without tests go through untouched.
+
 ## [0.2.0] - 2026-11-27
 
 ### Added

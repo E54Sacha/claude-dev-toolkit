@@ -34,6 +34,7 @@ Restart Claude Code. To use the `tutor` lessons, run `/claude-dev-toolkit:setup-
 | 📘 **`add-project-to-portfolio`** skill | Writes or updates a finished project's card on my portfolio site (pitch, proof metrics, tech, links, in English and French), suggests a resume bullet and the repo description, then builds and pushes the site. Made for my own portfolio. | *"Add this project to my portfolio"* |
 | 📘 **`setup-lessons`** skill | Creates your lessons repo from a template, or connects an existing one. | `/claude-dev-toolkit:setup-lessons` |
 | 🪝 **Format hook** | After every edit, formats the file with the project's own Prettier (JS, TS, JSON, CSS, Markdown…) or Ruff (Python). Does nothing if they aren't installed. | Automatic |
+| 🪝 **Test gate** hook | Before Claude runs `git commit`, runs the repo's tests (pytest with the folder's own `.venv`, `npm test`) at the root and one level down; if they fail, the commit is blocked and Claude gets the failing output. No tests found: the commit goes through. | Automatic, on every commit |
 | 🪝 **`lessons-sync` hook** | Checks every new lesson's quiz, rebuilds the lessons home page, then commits and pushes the lesson. A broken quiz is never published. | Automatic |
 
 Example of lessons made with `tutor`: [e54sacha.github.io/lessons](https://e54sacha.github.io/lessons/).
@@ -49,6 +50,7 @@ flowchart LR
   Lessons --> Sync["lessons-sync hook<br/>check, index, push"]
   Sync --> GitHub["GitHub (Pages)"]
   Edit["Any file edit"] --> Format["Format hook<br/>Prettier / Ruff"]
+  Commit["git commit by Claude"] --> Gate["Test gate hook<br/>blocks if tests fail"]
 ```
 
 **Skills** are instructions Claude loads into the conversation when your message matches their description. **`tutor`** is a subagent: a separate Claude with its own memory and only file tools (no shell), so it can't run commands. **Hooks** are scripts Claude Code runs by itself on an event: after each edit (format, lessons-sync) and when a session starts (tells Claude where your lessons repo is).
